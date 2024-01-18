@@ -16,15 +16,16 @@ import { AuthGuard } from '../guards/auth.guard';
 export class AuthController {
   constructor(private readonly _authService: AuthService) {}
 
-  // @Public()
+  // @Public() is an annotation to indicate that
+  // this endpoint is public, when have global configuration
+  // to all endpoint in application
   @HttpCode(HttpStatus.OK)
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this._authService.login(loginDto.email, loginDto.password);
   }
 
-  // TO DEFINE SPECIFIC ENDPOINT AS REQUIRED AUTHORIZATION
-  // WITHOUT APP_GUARD IN APP_MODULE
+  // UseGuards define only this endpoint as private
   @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
