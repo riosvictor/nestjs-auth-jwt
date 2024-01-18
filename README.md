@@ -101,6 +101,42 @@ $ npm run start:dev
 
 ```
 
+#### CURLs
+
+```bash
+
+# JWT Login
+$ curl --request POST \
+  --url http://localhost:3000/auth/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"email": "john@example.com",
+	"password": "changeme"
+}'
+
+# JWT Profile
+$ curl --request GET \
+  --url http://localhost:3000/auth/profile \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json'
+
+# Passport Login
+curl --request POST \
+  --url http://localhost:3000/auth-passport/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"email": "",
+	"password": "changeme"
+}'
+
+# Passport Profile
+curl --request GET \
+  --url http://localhost:3000/auth-passport/profile \
+  --header 'Authorization: Bearer <token>'
+
+
+```
+
 ---
 
 <a name="tech"></a>
@@ -122,13 +158,12 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ---
 
-## 💪 Como contribuir para o projeto
+## 💪 Aprendizado
 
-1. Faça um **fork** do projeto.
-2. Crie uma nova branch com as suas alterações: `git checkout -b my-feature`
-3. Salve as alterações e crie uma mensagem de commit contando o que você fez: `git commit -m "feature: My new feature"`
-4. Envie as suas alterações: `git push origin my-feature`
-> Caso tenha alguma dúvida confira este [guia de como contribuir no GitHub](./CONTRIBUTING.md)
+1. Implementar com o Passport é mais simples e mais fácil pois você codifica menos.
+2. Porém, realizar a implementação sem o Passport dá ao desenvolvedor maior autonomia, principalmente pelo fato de poder validar o DTO de entrada antes de realizar a verificação através do Guard.
+
+> Portanto eu recomendo não utilizar o Passport.
 
 ---
 
