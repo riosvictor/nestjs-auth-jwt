@@ -6,6 +6,7 @@ import { AuthPassportModule } from './auth-passport/auth-passport.module';
 @Module({
   imports: [AuthModule, UsersModule, AuthPassportModule],
   providers: [
+    // To activate the private endpoint to entire application
     // {
     //   provide: APP_GUARD,
     //   useClass: AuthGuard,
