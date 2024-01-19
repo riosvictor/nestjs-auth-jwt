@@ -2,7 +2,7 @@
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/riosvictor/nestjs-auth-jwt?color=%2304D361">
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/riosvictor/nestjs-auth-jwt"> 
-  <a href="https://github.com/riosvictor/nestjs-auth-jwt/commits/main">
+  <a href="https://github.com/riosvictor/nestjs-auth-jwt/commits/with-passport">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/riosvictor/nestjs-auth-jwt">
   </a>    
   <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
