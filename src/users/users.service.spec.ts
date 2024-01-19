@@ -12,7 +12,15 @@ describe('UsersService', () => {
     service = module.get<UsersService>(UsersService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should be able to find a user by email when user exists', async () => {
+    const user = await service.findOne('john@example.com');
+
+    expect(user).toBeDefined();
+    expect(user?.name).toBe('john');
+  });
+
+  it('should return undefined if user is not found when user does not exist', async () => {
+    const user = await service.findOne('nonexistent@example.com');
+    expect(user).toBeUndefined();
   });
 });

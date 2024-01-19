@@ -45,7 +45,7 @@
 
 ## 💻 Sobre o projeto
 
-Propósito do projeto.
+Projeto criado para aprofundar os conhecimentos em Autenticação usando JWT e NestJS.
 
 ---
 
@@ -62,15 +62,6 @@ Propósito do projeto.
 
     Rota privada, que requer um token JWT para retornar os dados do usuário logado.
     Utilizando `@nestjs/jwt` para validar o token.
-
-  - [x] /auth-passport/login
-  
-    Rota pública de autenticação sem validação do body e obtenção do token JWT.
-    Utilizando `@nestjs/passport` e `passport-local` para tratar o body da requisição e `@nestjs/jwt` para gerar o token.
-  - [x] /auth-passport/profile
-
-    Rota privada, que requer um token JWT para retornar os dados do usuário logado.
-    Utilizando `@nestjs/passport` e `passport-jwt` para extrair o token e validar o mesmo.
 
 ---
 
@@ -120,20 +111,6 @@ $ curl --request GET \
   --header 'Authorization: Bearer <token>' \
   --header 'Content-Type: application/json'
 
-# Passport Login
-curl --request POST \
-  --url http://localhost:3000/auth-passport/login \
-  --header 'Content-Type: application/json' \
-  --data '{
-	"email": "",
-	"password": "changeme"
-}'
-
-# Passport Profile
-curl --request GET \
-  --url http://localhost:3000/auth-passport/profile \
-  --header 'Authorization: Bearer <token>'
-
 
 ```
 
@@ -152,7 +129,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[NestJS](https://docs.nestjs.com/)**
 -   **[Class Validator](https://github.com/typestack/class-validator)**
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
--   **[Passport with NestJS](https://docs.nestjs.com/recipes/passport)**
 
 > Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/main/package.json)
 
@@ -163,7 +139,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 1. Implementar com o Passport é mais simples e mais fácil pois você codifica menos.
 2. Porém, realizar a implementação sem o Passport dá ao desenvolvedor maior autonomia, principalmente pelo fato de poder validar o DTO de entrada antes de realizar a verificação através do Guard.
 
-> Portanto eu recomendo não utilizar o Passport.
+> Portanto eu NÃO recomendo utilizar o Passport.
 
 ---
 

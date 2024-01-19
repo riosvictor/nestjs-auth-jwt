@@ -7,7 +7,7 @@ export async function encrypt(password: string): Promise<string> {
 
 export async function validate(
   password: string,
-  hash: string,
+  hash: string = '',
 ): Promise<boolean> {
   return compare(password, hash);
 }
