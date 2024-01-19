@@ -2,7 +2,7 @@
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/riosvictor/nestjs-auth-jwt?color=%2304D361">
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/riosvictor/nestjs-auth-jwt"> 
-  <a href="https://github.com/riosvictor/nestjs-auth-jwt/commits/main">
+  <a href="https://github.com/riosvictor/nestjs-auth-jwt/commits/with-jwt">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/riosvictor/nestjs-auth-jwt">
   </a>    
   <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
@@ -130,7 +130,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Class Validator](https://github.com/typestack/class-validator)**
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
 
-> Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/main/package.json)
+> Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/with-jwt/package.json)
 
 ---
 
