@@ -128,7 +128,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[NestJS](https://docs.nestjs.com/)**
 -   **[Passport with NestJS](https://docs.nestjs.com/recipes/passport)**
 
-> Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/main/package.json)
+> Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/with-passport/package.json)
 
 ---
 
