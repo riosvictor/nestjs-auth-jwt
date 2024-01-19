@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { ResponseLoginDto } from './dto/response-login.dto';
+import { ResponseLogin } from './models/response-login.model';
 import { validate } from '../common/utils/password-hash';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class AuthService {
     private readonly _jwtService: JwtService,
   ) {}
 
-  async login(email: string, password: string): Promise<ResponseLoginDto> {
+  async login(email: string, password: string): Promise<ResponseLogin> {
     const user = await this._usersService.findOne(email);
 
     const isValid = await validate(password, user?.password);
