@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './models/users.model';
+import { longRunningOperation } from '../common/utils/simulate-actions';
+import { UserResponse } from './models/user-response.model';
+import { UserEntity } from './models/user-entity.model';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
-  private readonly _users: User[] = [
+  private readonly _users: UserEntity[] = [
     {
       id: '4732e7f4-8588-4abc-888e-b57d23576331',
       name: 'john',
@@ -20,7 +23,13 @@ export class UsersService {
     },
   ];
 
-  async findOne(email: string): Promise<User | undefined> {
+  async findOne(email: string): Promise<UserEntity | undefined> {
     return this._users.find((user) => user.email === email);
+  }
+
+  async getUsers(): Promise<UserEntity[]> {
+    await longRunningOperation(2500);
+
+    return plainToInstance(UserResponse, this._users);
   }
 }
