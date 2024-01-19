@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { jwt } from '../common/constants';
+import { JWT } from '../common/constants';
 import { UsersService } from '../users/users.service';
 import { encrypt } from '../common/utils/password-hash';
 import { UnauthorizedException } from '@nestjs/common';
@@ -17,8 +17,8 @@ describe('AuthService', () => {
         UsersModule,
         JwtModule.register({
           global: true,
-          secret: jwt.secret,
-          signOptions: jwt.options,
+          secret: JWT.SECRET,
+          signOptions: JWT.OPTIONS,
         }),
       ],
       providers: [AuthService],

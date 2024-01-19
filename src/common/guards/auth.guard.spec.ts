@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from './auth.guard';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { jwt } from '../common/constants';
+import { JWT } from '../constants';
 import { Reflector } from '@nestjs/core';
 import { UnauthorizedException } from '@nestjs/common';
 
@@ -22,8 +22,8 @@ describe('AuthGuard', () => {
       imports: [
         JwtModule.register({
           global: true,
-          secret: jwt.secret,
-          signOptions: jwt.options,
+          secret: JWT.SECRET,
+          signOptions: JWT.OPTIONS,
         }),
       ],
       providers: [AuthGuard],
