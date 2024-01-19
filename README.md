@@ -45,7 +45,7 @@
 
 ## 💻 Sobre o projeto
 
-Propósito do projeto.
+Projeto para praticar a implementação de Autenticação com JWT usando a biblioteca Passport.
 
 ---
 
@@ -56,18 +56,9 @@ Propósito do projeto.
 - [x] Rotas
   - [x] /auth/login
   
-    Rota pública de autenticação com validação do body e obtenção do token JWT.
-    Utilizando `@nestjs/jwt` para gerar o token e `class-validator` para validar o body da requisição.
-  - [x] /auth/profile
-
-    Rota privada, que requer um token JWT para retornar os dados do usuário logado.
-    Utilizando `@nestjs/jwt` para validar o token.
-
-  - [x] /auth-passport/login
-  
     Rota pública de autenticação sem validação do body e obtenção do token JWT.
     Utilizando `@nestjs/passport` e `passport-local` para tratar o body da requisição e `@nestjs/jwt` para gerar o token.
-  - [x] /auth-passport/profile
+  - [x] /auth/profile
 
     Rota privada, que requer um token JWT para retornar os dados do usuário logado.
     Utilizando `@nestjs/passport` e `passport-jwt` para extrair o token e validar o mesmo.
@@ -105,8 +96,8 @@ $ npm run start:dev
 
 ```bash
 
-# JWT Login
-$ curl --request POST \
+# Passport Login
+curl --request POST \
   --url http://localhost:3000/auth/login \
   --header 'Content-Type: application/json' \
   --data '{
@@ -114,24 +105,9 @@ $ curl --request POST \
 	"password": "changeme"
 }'
 
-# JWT Profile
-$ curl --request GET \
-  --url http://localhost:3000/auth/profile \
-  --header 'Authorization: Bearer <token>' \
-  --header 'Content-Type: application/json'
-
-# Passport Login
-curl --request POST \
-  --url http://localhost:3000/auth-passport/login \
-  --header 'Content-Type: application/json' \
-  --data '{
-	"email": "",
-	"password": "changeme"
-}'
-
 # Passport Profile
 curl --request GET \
-  --url http://localhost:3000/auth-passport/profile \
+  --url http://localhost:3000/auth/profile \
   --header 'Authorization: Bearer <token>'
 
 
@@ -150,8 +126,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[NodeJS](https://nodejs.org/en/)**
 -   **[TypeScript](https://www.typescriptlang.org/)**
 -   **[NestJS](https://docs.nestjs.com/)**
--   **[Class Validator](https://github.com/typestack/class-validator)**
--   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Passport with NestJS](https://docs.nestjs.com/recipes/passport)**
 
 > Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/main/package.json)
@@ -163,7 +137,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 1. Implementar com o Passport é mais simples e mais fácil pois você codifica menos.
 2. Porém, realizar a implementação sem o Passport dá ao desenvolvedor maior autonomia, principalmente pelo fato de poder validar o DTO de entrada antes de realizar a verificação através do Guard.
 
-> Portanto eu recomendo não utilizar o Passport.
+> Portanto eu NÃO recomendo utilizar o Passport.
 
 ---
 

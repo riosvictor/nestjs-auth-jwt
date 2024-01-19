@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { AuthPassportModule } from './auth-passport/auth-passport.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtPassportGuard } from './guards';
 
 @Module({
-  imports: [AuthModule, UsersModule, AuthPassportModule],
+  imports: [UsersModule, AuthModule],
   providers: [
-    // To activate the private endpoint to entire application
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtPassportGuard,
+    },
   ],
 })
 export class AppModule {}

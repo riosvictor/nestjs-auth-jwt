@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   HttpCode,
@@ -9,26 +8,25 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { AuthGuard } from '../guards/auth.guard';
+import { JwtPassportGuard, LocalPassportGuard, Public } from '../guards';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly _authService: AuthService) {}
 
-  // @Public() is an annotation to indicate that
-  // this endpoint is public, when have global configuration
-  // to all endpoint in application
+  // @UseGuards(LocalPassportGuard)
+  @Public()
+  @UseGuards(LocalPassportGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(@Body() loginDto: LoginDto) {
-    return this._authService.login(loginDto.email, loginDto.password);
+  async login(@Request() req) {
+    return this._authService.login(req.user);
   }
 
-  // UseGuards define only this endpoint as private
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtPassportGuard)
+  @HttpCode(HttpStatus.OK)
   @Get('profile')
-  getProfile(@Request() req) {
+  async getProfile(@Request() req) {
     return req.user;
   }
 }
