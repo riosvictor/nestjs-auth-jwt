@@ -152,6 +152,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 > Portanto eu NÃO recomendo utilizar o Passport.
 
+3. Foi implementado funções que modularizam a importação dos módulos que utilizam variáveis de ambiente.
+4. Foi implementado a importação das variáveis de ambiente com validação dos tipo, valores e obrigatoriedade.
+
 ---
 
 <a name="author"></a>
