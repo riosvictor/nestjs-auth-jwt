@@ -3,7 +3,7 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { UsersService } from '../src/users/users.service';
-import { User } from '../src/users/models/users.model';
+import { UserEntity } from '../src/users/models/user-entity.model';
 import { encrypt } from '../src/common/utils/password-hash';
 
 describe('Application (e2e)', () => {
@@ -12,7 +12,7 @@ describe('Application (e2e)', () => {
 
   const email = 'john@example.com';
   const password = 'changeme';
-  const user: User = {
+  const user: UserEntity = {
     email,
     name: 'John',
     password,

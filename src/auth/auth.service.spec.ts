@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { JWT } from '../common/constants';
-import { UsersService } from '../users/users.service';
-import { encrypt } from '../common/utils/password-hash';
 import { UnauthorizedException } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
+import { JWT_MODULE_CONFIG } from '../common/config/jwt-module.config';
+import { encrypt } from '../common/utils/password-hash';
+import { UsersModule } from '../users/users.module';
+import { UsersService } from '../users/users.service';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -15,13 +16,16 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         UsersModule,
-        JwtModule.register({
+        ConfigModule.forRoot(),
+        JwtModule.registerAsync({
           global: true,
-          secret: JWT.SECRET,
-          signOptions: JWT.OPTIONS,
+          imports: [ConfigModule],
+          useFactory: JWT_MODULE_CONFIG,
+          inject: [ConfigService],
         }),
       ],
       providers: [AuthService],
+      exports: [AuthService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
