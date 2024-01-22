@@ -12,7 +12,6 @@ describe('LoginDto', () => {
     expect(errors.length).toBe(0);
   });
 
-  // Invalid email should fail validation with appropriate error message
   it('should fail validation with appropriate error message when email is invalid', () => {
     const loginDto = new LoginDto();
     loginDto.email = 'invalidemail';
@@ -26,7 +25,6 @@ describe('LoginDto', () => {
     );
   });
 
-  // Empty password should fail validation with appropriate error message
   it('should fail validation with appropriate error message when password is empty', () => {
     const loginDto = new LoginDto();
     loginDto.email = 'test@example.com';
@@ -40,7 +38,6 @@ describe('LoginDto', () => {
     );
   });
 
-  // Email with invalid format should fail validation with appropriate error message
   it('should fail validation with appropriate error message when email format is invalid', () => {
     const loginDto = new LoginDto();
     loginDto.email = 'testexample.com';
@@ -54,7 +51,6 @@ describe('LoginDto', () => {
     );
   });
 
-  // Password with only whitespace characters should fail validation with appropriate error message
   it('should fail validation with appropriate error message when password contains only whitespace characters', () => {
     const transformedLoginDto = plainToInstance(LoginDto, {
       email: 'test@example.com',
@@ -68,7 +64,6 @@ describe('LoginDto', () => {
     );
   });
 
-  // Email with length greater than maximum allowed should fail validation with appropriate error message
   it('should fail validation with appropriate error message when email length is greater than maximum allowed', () => {
     const loginDto = new LoginDto();
     loginDto.email = 'test@example.com'.repeat(10);

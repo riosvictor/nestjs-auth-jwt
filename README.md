@@ -111,6 +111,12 @@ $ curl --request GET \
   --header 'Authorization: Bearer <token>' \
   --header 'Content-Type: application/json'
 
+# Get a list of Users
+# This endpoint mock an long request and use cache for next requests.
+curl --request GET \
+  --url http://localhost:3000/users \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json'
 
 ```
 

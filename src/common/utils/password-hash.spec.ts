@@ -73,6 +73,4 @@ describe('validate function', () => {
 
     expect(compare).toHaveBeenCalledWith(mockPassword, mockHash);
   });
-
-  // Add more tests as needed
 });

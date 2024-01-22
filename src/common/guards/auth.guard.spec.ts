@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from './auth.guard';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { JWT } from '../constants';
 import { Reflector } from '@nestjs/core';
-import { UnauthorizedException } from '@nestjs/common';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JWT_MODULE_CONFIG } from '../config/jwt-module.config';
 
 const getContext = (headers = {}) =>
   ({
     switchToHttp: () => ({ getRequest: () => ({ headers }) }),
     getHandler: () => {},
     getClass: () => {},
-  }) as any;
+  }) as ExecutionContext;
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -20,10 +21,11 @@ describe('AuthGuard', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        JwtModule.register({
-          global: true,
-          secret: JWT.SECRET,
-          signOptions: JWT.OPTIONS,
+        ConfigModule.forRoot(),
+        JwtModule.registerAsync({
+          imports: [ConfigModule],
+          useFactory: JWT_MODULE_CONFIG,
+          inject: [ConfigService],
         }),
       ],
       providers: [AuthGuard],
@@ -41,11 +43,9 @@ describe('AuthGuard', () => {
   it('should allow access to public routes', async () => {
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(true);
 
-    const result = await guard.canActivate({
-      switchToHttp: () => ({ getRequest: () => ({ headers: {} }) }),
-      getHandler: () => {},
-      getClass: () => {},
-    } as any);
+    const context = getContext();
+
+    const result = await guard.canActivate(context);
 
     expect(result).toBeTruthy();
   });

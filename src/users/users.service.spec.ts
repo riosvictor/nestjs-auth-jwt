@@ -23,4 +23,10 @@ describe('UsersService', () => {
     const user = await service.findOne('nonexistent@example.com');
     expect(user).toBeUndefined();
   });
+
+  it('should be able to get all users ', async () => {
+    const users = await service.getUsers();
+
+    expect(users.length).toBe(2);
+  });
 });
