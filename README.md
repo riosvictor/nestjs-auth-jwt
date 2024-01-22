@@ -45,7 +45,10 @@
 
 ## 💻 Sobre o projeto
 
-Projeto criado para aprofundar os conhecimentos em Autenticação usando JWT e NestJS.
+Projeto NestJS criado para aprofundar os conhecimentos em Autenticação usando JWT.
+Posteriormente foi implementado: 
+   - Cache em memória.
+   - Variáveis de ambiente e validação delas.
 
 ---
 
