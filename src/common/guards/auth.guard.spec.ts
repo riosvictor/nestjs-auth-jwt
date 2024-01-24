@@ -21,7 +21,9 @@ describe('AuthGuard', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        ConfigModule.forRoot(),
+        ConfigModule.forRoot({
+          envFilePath: './env.test',
+        }),
         JwtModule.registerAsync({
           imports: [ConfigModule],
           useFactory: JWT_MODULE_CONFIG,

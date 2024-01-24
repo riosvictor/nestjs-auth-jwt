@@ -2,7 +2,7 @@
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/riosvictor/nestjs-auth-jwt?color=%2304D361">
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/riosvictor/nestjs-auth-jwt"> 
-  <a href="https://github.com/riosvictor/nestjs-auth-jwt/commits/main">
+  <a href="https://github.com/riosvictor/nestjs-auth-jwt/commits/with-cache-config-env">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/riosvictor/nestjs-auth-jwt">
   </a>    
   <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
@@ -45,7 +45,10 @@
 
 ## 💻 Sobre o projeto
 
-Projeto criado para aprofundar os conhecimentos em Autenticação usando JWT e NestJS.
+Projeto NestJS criado para aprofundar os conhecimentos em Autenticação usando JWT.
+Posteriormente foi implementado: 
+   - Cache em memória.
+   - Variáveis de ambiente e validação delas.
 
 ---
 
@@ -135,8 +138,10 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[NestJS](https://docs.nestjs.com/)**
 -   **[Class Validator](https://github.com/typestack/class-validator)**
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
+-   **[Cache with NestJS](https://docs.nestjs.com/security/authentication)**
+-   **[Environments Variables with NestJS](https://docs.nestjs.com/techniques/caching)**
 
-> Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/main/package.json)
+> Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/with-cache-config-env/package.json)
 
 ---
 
@@ -146,6 +151,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 2. Porém, realizar a implementação sem o Passport dá ao desenvolvedor maior autonomia, principalmente pelo fato de poder validar o DTO de entrada antes de realizar a verificação através do Guard.
 
 > Portanto eu NÃO recomendo utilizar o Passport.
+
+3. Foi implementado funções que modularizam a importação dos módulos que utilizam variáveis de ambiente.
+4. Foi implementado a importação das variáveis de ambiente com validação dos tipo, valores e obrigatoriedade.
 
 ---
 

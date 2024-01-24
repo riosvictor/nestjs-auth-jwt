@@ -16,7 +16,9 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         UsersModule,
-        ConfigModule.forRoot(),
+        ConfigModule.forRoot({
+          envFilePath: './env.test',
+        }),
         JwtModule.registerAsync({
           global: true,
           imports: [ConfigModule],
