@@ -147,13 +147,36 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ## 💪 Aprendizado
 
-1. Implementar com o Passport é mais simples e mais fácil pois você codifica menos.
-2. Porém, realizar a implementação sem o Passport dá ao desenvolvedor maior autonomia, principalmente pelo fato de poder validar o DTO de entrada antes de realizar a verificação através do Guard.
+A abordagem de arquitetura limpa tem uma dependência sequencial entre as seguintes camadas:
 
-> Portanto eu NÃO recomendo utilizar o Passport.
+1. Presentation
+   - Concentra a entrada da aplicação, onde o cliente realiza as solicitações
+   - No backend existe os controllers que apresentam os endpoints disponíveis
+2. Use Cases
+   - Classe responsável por executar apenas uma ação dentro da regra de negócio definida
+   - Desacoplar a camada de presentation, apartando o controller da fonte de dados
+3. Core
+   - Possui a abstração da camada de negócio (classes abstratas)
+   1. Base
+      - Possui a estrutura base das classes de entidade (que representa uma entidade de negócio);
+      - Possui a estrutura base das classes de mapeamento (responsável por realizar as transformações de entrada/saída)
+      - Possui a estrutura base das classes de repositório (responsável por realizar operações externas a aplicação)
 
-3. Foi implementado funções que modularizam a importação dos módulos que utilizam variáveis de ambiente.
-4. Foi implementado a importação das variáveis de ambiente com validação dos tipo, valores e obrigatoriedade.
+   1. Domain
+      - Possui a implementação das classes de entidade (que representa uma entidade de negócio);
+      - Possui a implementação das classes de mapeamento (responsável por realizar as transformações de entrada/saída)
+4. Data
+   - Possui a implementação da camada de negócio (classes concretas)
+  
+
+Outras Pastas que são compartilhadas por várias camadas da aplicação
+1. Common (Shared)
+   1. Dto
+   - possui as classes que representam a entrada de dados do mundo externo
+
+2. Infra
+   - Nesta pasta podem ser implementados middlewares ou interceptors, porém essa pasta está acoplada ao framework, não sendo reaproveitada em caso de mudança de tecnologia (framework, banco de dados, estruturas externas);
+   - Mas ela é necessária para implementar lógicas relacionadas a autenticação, etc.
 
 ---
 
