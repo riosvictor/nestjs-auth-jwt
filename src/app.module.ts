@@ -14,11 +14,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { Cache } from 'cache-manager';
 import { AuthModule } from './auth/auth.module';
-import { CACHE_MODULE_CONFIG } from './common/config/cache-module.config';
 import { validate } from './common/environment/env.validation';
 import { AuthGuard } from './common/guards';
 import { ExecutionTimeMiddleware } from './common/middleware/execution-time.middleware';
 import { UsersModule } from './users/users.module';
+import { CACHE_MODULE_CONFIG } from './common/config/cache-module.config';
 
 @Module({
   imports: [
@@ -29,9 +29,9 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     CacheModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: CACHE_MODULE_CONFIG,
+      isGlobal: true,
       inject: [ConfigService],
+      useFactory: CACHE_MODULE_CONFIG,
     }),
   ],
   providers: [

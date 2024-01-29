@@ -10,12 +10,24 @@ export class ExecutionTimeMiddleware implements NestMiddleware {
 
     res.on('finish', () => {
       const end = Date.now();
-      const duration = end - start;
-      this._logger.log(
-        `Request to [${req.method}] ${req.path} took ${duration}ms`,
-      );
+      const durationMs = end - start;
+      const { method, path } = req;
+      const durationText =
+        durationMs > 1000
+          ? `${(durationMs / 1000).toFixed(2)}s`
+          : `${durationMs}ms`;
+
+      this._logRequestDuration(method, path, durationText);
     });
 
     next();
+  }
+
+  private _logRequestDuration(
+    method: string,
+    path: string,
+    durationText: string,
+  ) {
+    this._logger.log(`Request to [${method}] ${path} took ${durationText}`);
   }
 }

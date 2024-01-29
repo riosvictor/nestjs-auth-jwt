@@ -47,7 +47,7 @@
 
 Projeto NestJS criado para aprofundar os conhecimentos em Autenticação usando JWT.
 Posteriormente foi implementado: 
-   - Cache em memória.
+   - Cache no Redis.
    - Variáveis de ambiente e validação delas.
 
 ---
@@ -88,7 +88,11 @@ Ferramentas que são requisitos para a execução do projeto
 
 ```bash
 
-# comentário
+# para executar o servidor do redis na porta 6379 e a interface do redis na porta 8001
+$ podman run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+
+# A interface do Redis inciará na porta:8001 - acesse http://localhost:8001
+
 $ npm run start:dev
 
 # O servidor inciará na porta:3000 - acesse http://localhost:3000
@@ -139,6 +143,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Class Validator](https://github.com/typestack/class-validator)**
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Cache with NestJS](https://docs.nestjs.com/security/authentication)**
+-   **[Redis](https://redis.io/)**
 -   **[Environments Variables with NestJS](https://docs.nestjs.com/techniques/caching)**
 
 > Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/with-cache-config-env/package.json)

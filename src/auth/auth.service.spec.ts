@@ -17,11 +17,11 @@ describe('AuthService', () => {
       imports: [
         UsersModule,
         ConfigModule.forRoot({
+          isGlobal: true,
           envFilePath: './env.test',
         }),
         JwtModule.registerAsync({
           global: true,
-          imports: [ConfigModule],
           useFactory: JWT_MODULE_CONFIG,
           inject: [ConfigService],
         }),
