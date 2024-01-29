@@ -12,13 +12,22 @@ import {
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
-import { AuthModule } from './auth/auth.module';
-import { CACHE_MODULE_CONFIG } from './common/config/cache-module.config';
-import { validate } from './common/environment/env.validation';
-import { AuthGuard } from './common/guards';
-import { ExecutionTimeMiddleware } from './common/middleware/execution-time.middleware';
-import { UsersModule } from './users/users.module';
+import { validate } from './infra/environment/env.validation';
+import { AuthGuard } from './infra/guards';
+import { ExecutionTimeMiddleware } from './infra/middleware/execution-time.middleware';
+import { UsersController } from './presentation/users.controller';
+import {
+  CreateUserUseCase,
+  FindOneUserToAuthUseCase,
+  GetAllUsersUseCase,
+} from './use-cases';
+import { CACHE_MODULE_CONFIG, JWT_MODULE_CONFIG } from './infra/config';
+import { AuthController } from './presentation/auth.controller';
+import { UserRepository } from './core/repositories/users';
+import { UsersCacheMemoryRepository } from './data/cache-memory/users';
+import { AuthService } from './infra/jwt/auth.service';
 
 @Module({
   imports: [
@@ -26,10 +35,13 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
       validate,
     }),
-    AuthModule,
-    UsersModule,
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: JWT_MODULE_CONFIG,
+      inject: [ConfigService],
+    }),
     CacheModule.registerAsync({
-      imports: [ConfigModule],
+      isGlobal: true,
       useFactory: CACHE_MODULE_CONFIG,
       inject: [ConfigService],
     }),
@@ -43,7 +55,17 @@ import { UsersModule } from './users/users.module';
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
     },
+    {
+      provide: UserRepository,
+      useClass: UsersCacheMemoryRepository,
+    },
+    //
+    CreateUserUseCase,
+    GetAllUsersUseCase,
+    FindOneUserToAuthUseCase,
+    AuthService,
   ],
+  controllers: [UsersController, AuthController],
 })
 export class AppModule implements OnModuleDestroy, NestModule {
   constructor(@Inject(CACHE_MANAGER) private readonly _cacheManager: Cache) {}
