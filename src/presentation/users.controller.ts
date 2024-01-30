@@ -6,7 +6,7 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { CreateUserUseCase, GetAllUsersUseCase } from '@/use-cases';
+import { CreateUserUseCase, GetAllUsersUseCase } from '@/application/usecases';
 import { UserCreateDto } from '@/common/dtos';
 
 @Controller('users')

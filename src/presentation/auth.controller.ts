@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Public } from '@/infra/guards';
-import { AuthService } from '@/infra/jwt/auth.service';
+import { AuthService } from '@/application/services';
 import { RequestLoginDto, ResponseLoginDto } from '@/common/dtos';
 
 @Controller('auth')

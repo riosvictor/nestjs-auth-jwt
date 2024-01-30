@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from '@/app.module';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {

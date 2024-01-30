@@ -7,7 +7,7 @@ import {
   Min,
   validateSync,
 } from 'class-validator';
-import { CACHE_TTL_MINUTES, Environment, JWT } from '../../common/constants';
+import { CACHE_TTL_MINUTES, Environment, JWT } from '@/common/constants';
 
 class EnvironmentVariables {
   @IsEnum(Environment)
