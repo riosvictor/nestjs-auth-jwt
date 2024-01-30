@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Entity, Repository } from '@/domain/interfaces';
+import { Entity } from '@/domain/interfaces';
 import { longRunningOperation } from '@/common/utils/simulate-actions';
+import { Repository } from '@/adapters/interfaces';
 
 @Injectable()
 export class RepositoryCacheMemory<

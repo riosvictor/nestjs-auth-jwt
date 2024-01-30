@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserCreatedDto } from '@/common/dtos';
-import { UseCase } from '@/domain/interfaces';
-import { UserRepository } from '@/domain/repositories/users';
+import { UseCase } from '@/adapters/interfaces';
+import { UserRepository } from '@/application/repositories/users';
 import { UserCreatedMapper } from '@/domain/models/mappers/users';
 
 @Injectable()
