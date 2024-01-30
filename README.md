@@ -45,10 +45,16 @@
 
 ## 💻 Sobre o projeto
 
-Projeto NestJS criado para aprofundar os conhecimentos em Autenticação usando JWT.
-Posteriormente foi implementado: 
-   - Cache em memória.
-   - Variáveis de ambiente e validação delas.
+Projeto NestJS criado para aprofundar os conhecimentos em Arquitetura Limpa (Clean Architecture).
+Temos as seguintes pastas
+  - domain (que representa a camada de negócio e mais interna)
+  - application (que representa a camada de serviços, casos de uso e repositórios)
+  - adapters (que representa a camada de interfaces responsáveis pelo desacoplamento e intermediação das camadas de aplicação e apresentação/externas [banco de dados, ou bibliotecas])
+  - presentation (que representa a camada de apresentação dos dados/interface)
+  - outras
+    - infra (que auxilia na implementação de configurações ou tecnologias específicas)
+    - common (que concentra funções auxiliares, contantes e módulos globais)
+
 
 ---
 
@@ -140,6 +146,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Cache with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Environments Variables with NestJS](https://docs.nestjs.com/techniques/caching)**
+-   **[Arquitetura Limpa](http://cleancoder.com/files/cleanArchitectureCourse.md)**
+-   **[SOLID](http://cleancoder.com/files/solid.md)**
 
 > Veja o arquivo  [package.json](https://github.com/riosvictor/nestjs-auth-jwt/blob/with-cache-config-env/package.json)
 
@@ -150,30 +158,18 @@ As seguintes ferramentas foram usadas na construção do projeto:
 A abordagem de arquitetura limpa tem uma dependência sequencial entre as seguintes camadas:
 
 1. Presentation
-   - Concentra a entrada da aplicação, onde o cliente realiza as solicitações
-   - No backend existe os controllers que apresentam os endpoints disponíveis
-2. Use Cases
-   - Classe responsável por executar apenas uma ação dentro da regra de negócio definida
-   - Desacoplar a camada de presentation, apartando o controller da fonte de dados
-3. Core
-   - Possui a abstração da camada de negócio (classes abstratas)
-   1. Base
-      - Possui a estrutura base das classes de entidade (que representa uma entidade de negócio);
-      - Possui a estrutura base das classes de mapeamento (responsável por realizar as transformações de entrada/saída)
-      - Possui a estrutura base das classes de repositório (responsável por realizar operações externas a aplicação)
-
-   1. Domain
-      - Possui a implementação das classes de entidade (que representa uma entidade de negócio);
-      - Possui a implementação das classes de mapeamento (responsável por realizar as transformações de entrada/saída)
-4. Data
-   - Possui a implementação da camada de negócio (classes concretas)
+   - pasta que representa a camada de frameworks e drivers, ou seja, o mundo externo (db, frameworks, dispositivos, interfaces externas)
+2. Adapters
+   - pasta que representa a camada de adaptadores, responsáveis pela tradução para comunicação com os elementos externos (controllers, presenters e repositories)
+3. Application
+   - pasta que representa a camada de casos de uso que representam as regras de negócio da aplicação, responsável pela comunicação com as entidades (podendo conter services também)
+4. Domain
+   - pasta que representa a camada de entidades (as quais geralmente são um retrato das tabelas do banco de dados)
   
 
 Outras Pastas que são compartilhadas por várias camadas da aplicação
 1. Common (Shared)
-   1. Dto
-   - possui as classes que representam a entrada de dados do mundo externo
-
+   - 
 2. Infra
    - Nesta pasta podem ser implementados middlewares ou interceptors, porém essa pasta está acoplada ao framework, não sendo reaproveitada em caso de mudança de tecnologia (framework, banco de dados, estruturas externas);
    - Mas ela é necessária para implementar lógicas relacionadas a autenticação, etc.

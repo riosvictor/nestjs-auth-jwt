@@ -24,6 +24,7 @@ import { ExecutionTimeMiddleware } from '@/infra/middleware/execution-time.middl
     ConfigModule.forRoot({
       isGlobal: true,
       validate,
+      envFilePath: ['.env.test', '.env'],
     }),
     JwtModule.registerAsync({
       global: true,

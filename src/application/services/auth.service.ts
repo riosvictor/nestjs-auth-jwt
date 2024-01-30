@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { validate } from '@/common/utils/password-hash';
+import { validate } from '@/common/utils';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
 import { ResponseLoginDto } from '@/common/dtos';
 

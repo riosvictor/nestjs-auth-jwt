@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Entity } from '@/domain/interfaces';
-import { longRunningOperation } from '@/common/utils/simulate-actions';
+import { longRunningOperation } from '@/common/utils';
 import { Repository } from '@/adapters/interfaces';
 
 @Injectable()
