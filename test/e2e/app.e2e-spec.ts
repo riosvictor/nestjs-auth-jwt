@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
-import { UsersService } from '../src/users/users.service';
-import { UserEntity } from '../src/users/models/user-entity.model';
-import { encrypt } from '../src/common/utils/password-hash';
+import { AppModule } from '@/app.module';
+import { encrypt } from '@/common/utils';
+import { FindOneUserToAuthUseCase } from '../../src/application/usecases';
+import { UserEntity } from '../../src/domain/models/entities/users';
 
 describe('Application (e2e)', () => {
   let app: INestApplication;
-  let usersService: UsersService;
+  let findUserUseCase: FindOneUserToAuthUseCase;
 
   const email = 'john@example.com';
   const password = 'changeme';
@@ -28,7 +28,9 @@ describe('Application (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
 
-    usersService = moduleFixture.get<UsersService>(UsersService);
+    findUserUseCase = moduleFixture.get<FindOneUserToAuthUseCase>(
+      FindOneUserToAuthUseCase,
+    );
   });
 
   afterAll(async () => {
@@ -49,7 +51,7 @@ describe('Application (e2e)', () => {
   });
 
   it('should throw an error when trying to login with invalid credentials', async () => {
-    usersService.findOne = jest.fn().mockResolvedValueOnce(null);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce(null);
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
@@ -77,7 +79,7 @@ describe('Application (e2e)', () => {
   });
 
   it('should be successful login with correct credentials', async () => {
-    usersService.findOne = jest.fn().mockResolvedValueOnce(user);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce(user);
     user.password = await encrypt(password);
 
     const response = await request(app.getHttpServer())
@@ -94,7 +96,7 @@ describe('Application (e2e)', () => {
   });
 
   it('should be successful get profile with a valid token', async () => {
-    usersService.findOne = jest.fn().mockResolvedValueOnce(user);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce(user);
     user.password = await encrypt(password);
 
     const loginResponse = await request(app.getHttpServer())
