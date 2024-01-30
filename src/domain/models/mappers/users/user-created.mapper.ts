@@ -5,10 +5,13 @@ import { UserEntity } from '@/domain/models/entities/users';
 
 export class UserCreatedMapper extends Mapper<UserCreatedDto, UserEntity> {
   mapFrom(data: UserCreatedDto): UserEntity {
-    return plainToClass(UserEntity, data, {
-      excludeExtraneousValues: true,
-      // exposeUnsetFields: false,
-    });
+    const user = new UserEntity();
+
+    user.id = data.id;
+    user.name = data.name;
+    user.email = data.email;
+
+    return user;
   }
   mapTo(data: UserEntity): UserCreatedDto {
     return plainToClass(UserCreatedDto, data, {
