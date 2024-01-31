@@ -9,7 +9,7 @@ const initializeModule = () => {
   return Test.createTestingModule({
     imports: [
       ConfigModule.forRoot({
-        validate: validate,
+        validate,
         ignoreEnvFile: true,
       }),
     ],
@@ -158,11 +158,7 @@ describe('validate ConfigModule', () => {
     });
 
     it('should throw an error when value is invalid', async () => {
-      console.log(process.env.CACHE_TTL_IN_MINUTES);
-
       process.env.CACHE_TTL_IN_MINUTES = '0';
-
-      console.log(process.env.CACHE_TTL_IN_MINUTES);
 
       await expect(async () => await initializeModule()).rejects.toThrow();
     });

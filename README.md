@@ -12,7 +12,7 @@
 </p>
 
 <h1 align="center">
-    Authentication with NestJS 🚀
+    Arquitetura Limpa com NestJS 🚀
 </h1>
 
 <details>
@@ -47,13 +47,13 @@
 
 Projeto NestJS criado para aprofundar os conhecimentos em Arquitetura Limpa (Clean Architecture).
 Temos as seguintes pastas
-  - domain (que representa a camada de negócio e mais interna)
-  - application (que representa a camada de serviços, casos de uso e repositórios)
-  - adapters (que representa a camada de interfaces responsáveis pelo desacoplamento e intermediação das camadas de aplicação e apresentação/externas [banco de dados, ou bibliotecas])
-  - presentation (que representa a camada de apresentação dos dados/interface)
-  - outras
-    - infra (que auxilia na implementação de configurações ou tecnologias específicas)
-    - common (que concentra funções auxiliares, contantes e módulos globais)
+  - `domain`: (que representa a camada de negócio e mais interna)
+  - `application`: (que representa a camada de serviços, casos de uso e repositórios)
+  - `adapters`: (que representa a camada de interfaces responsáveis pelo desacoplamento e intermediação das camadas de aplicação e apresentação/externas [banco de dados, ou bibliotecas])
+  - `presentation`: (que representa a camada de apresentação dos dados/interface)
+  - pastas não contempladas na arquitetura:
+    - `infra`: (que auxilia na implementação de configurações ou tecnologias específicas)
+    - `common`: (que concentra funções auxiliares, contantes e módulos globais)
 
 
 ---
@@ -62,15 +62,16 @@ Temos as seguintes pastas
 
 ## ⚙️ Funcionalidades
 
-- [x] Rotas
-  - [x] /auth/login
-  
-    Rota pública de autenticação com validação do body e obtenção do token JWT.
-    Utilizando `@nestjs/jwt` para gerar o token e `class-validator` para validar o body da requisição.
-  - [x] /auth/profile
-
-    Rota privada, que requer um token JWT para retornar os dados do usuário logado.
-    Utilizando `@nestjs/jwt` para validar o token.
+- O projeto implementa a arquitetura limpa como padrão de desenvolvimento de software. Utilizando princípios de SOLID e Clean Code.
+- Consiste de uma API Backend implementando as seguintes funcionalidades:
+   1. Autenticação JWT
+   2. Refresh Token JWT
+   3. Autorização RBAC com Roles [`ADMIN`, `USER`]
+   4. Cache em memória para as requisições GET
+   5. Validação das variáveis de ambiente
+   6. Criptografia e Descriptografia de senha no processo de cadastro e verificação de usuário
+   7. CORS para segurança das requisições de outro domínio
+   8. Validação dos dados de entrada
 
 ---
 
@@ -100,38 +101,27 @@ $ npm run start:dev
 # O servidor inciará na porta:3000 - acesse http://localhost:3000
 
 ```
-
-#### CURLs
+##### Rodando com Podman
 
 ```bash
+# criação da imagem
+$ podman-compose up -d
 
-# JWT Login
-$ curl --request POST \
-  --url http://localhost:3000/auth/login \
-  --header 'Content-Type: application/json' \
-  --data '{
-	"email": "john@example.com",
-	"password": "changeme"
-}'
-
-# JWT Profile
-$ curl --request GET \
-  --url http://localhost:3000/auth/profile \
-  --header 'Authorization: Bearer <token>' \
-  --header 'Content-Type: application/json'
-
-# Get a list of Users
-# This endpoint mock an long request and use cache for next requests.
-curl --request GET \
-  --url http://localhost:3000/users \
-  --header 'Authorization: Bearer <token>' \
-  --header 'Content-Type: application/json'
+# execução da imagem
+$ podman-compose down
 
 ```
 
-Para fins de teste existem 2 usuários previamente cadastrados com permissões diferentes
-   - email: maria@example.com; senha: guess;    role: user
-   - email: john@example.com;  senha: changeme; role: admin
+##### Rodando com Docker
+Basta trocar os comandos acima de `podman` para `docker`
+
+##### Dados de Teste
+Para fins de teste existem 2 usuários previamente cadastrados com permissões diferentes.
+
+| email | senha | roles |
+|-------|-------|-------|
+|  maria@example.com  |  guess    |  user  |
+|  john@example.com   |  changeme |  admin |
 
 ---
 
@@ -150,7 +140,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Cache with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Environments Variables with NestJS](https://docs.nestjs.com/techniques/caching)**
--   **[Authorization with NestJS](https://docs.nestjs.com/security/authorization)**
+-   **[Authorization RBAC with NestJS](https://docs.nestjs.com/security/authorization)**
 -   **[Rate Limit with NestJS](https://docs.nestjs.com/security/rate-limiting)**
 -   **[Arquitetura Limpa](http://cleancoder.com/files/cleanArchitectureCourse.md)**
 -   **[SOLID](http://cleancoder.com/files/solid.md)**
@@ -171,11 +161,11 @@ A abordagem de arquitetura limpa tem uma dependência sequencial entre as seguin
    - pasta que representa a camada de casos de uso que representam as regras de negócio da aplicação, responsável pela comunicação com as entidades (podendo conter services também)
 4. Domain
    - pasta que representa a camada de entidades (as quais geralmente são um retrato das tabelas do banco de dados)
-  
+---  
 
 Outras Pastas que são compartilhadas por várias camadas da aplicação
 1. Common (Shared)
-   - 
+   - Classes, funções, constantes ou enums compartilhados para toda a aplicação.
 2. Infra
    - Nesta pasta podem ser implementados middlewares ou interceptors, porém essa pasta está acoplada ao framework, não sendo reaproveitada em caso de mudança de tecnologia (framework, banco de dados, estruturas externas);
    - Mas ela é necessária para implementar lógicas relacionadas a autenticação, etc.
