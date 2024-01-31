@@ -1,58 +1,29 @@
+import { Module } from '@nestjs/common';
+import { UsersController } from '@/presentation/users.controller';
 import {
-  CACHE_MANAGER,
-  CacheInterceptor,
-  CacheModule,
-} from '@nestjs/cache-manager';
-import {
-  Inject,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  OnModuleDestroy,
-} from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { Cache } from 'cache-manager';
-import { AuthModule } from './auth/auth.module';
-import { CACHE_MODULE_CONFIG } from './common/config/cache-module.config';
-import { validate } from './common/environment/env.validation';
-import { AuthGuard } from './common/guards';
-import { ExecutionTimeMiddleware } from './common/middleware/execution-time.middleware';
-import { UsersModule } from './users/users.module';
+  CreateUserUseCase,
+  FindOneUserToAuthUseCase,
+  GetAllUsersUseCase,
+} from '@/application/usecases';
+import { AuthController } from '@/presentation/auth.controller';
+import { UserRepository } from '@/application/repositories';
+import { UsersCacheMemoryRepository } from '@/adapters/data/cache-memory/users';
+import { AuthService } from '@/application/services';
+import { GlobalModule } from '@/common/global/global.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validate,
-    }),
-    AuthModule,
-    UsersModule,
-    CacheModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: CACHE_MODULE_CONFIG,
-      inject: [ConfigService],
-    }),
-  ],
+  imports: [GlobalModule],
   providers: [
     {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
+      provide: UserRepository,
+      useClass: UsersCacheMemoryRepository,
     },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
+
+    CreateUserUseCase,
+    GetAllUsersUseCase,
+    FindOneUserToAuthUseCase,
+    AuthService,
   ],
+  controllers: [UsersController, AuthController],
 })
-export class AppModule implements OnModuleDestroy, NestModule {
-  constructor(@Inject(CACHE_MANAGER) private readonly _cacheManager: Cache) {}
-
-  async onModuleDestroy() {
-    await this._cacheManager.reset();
-  }
-
-  async configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ExecutionTimeMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
