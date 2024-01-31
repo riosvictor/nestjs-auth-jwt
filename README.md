@@ -129,6 +129,10 @@ curl --request GET \
 
 ```
 
+Para fins de teste existem 2 usuários previamente cadastrados com permissões diferentes
+   - email: maria@example.com; senha: guess;    role: user
+   - email: john@example.com;  senha: changeme; role: admin
+
 ---
 
 <a name="tech"></a>
@@ -146,6 +150,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Cache with NestJS](https://docs.nestjs.com/security/authentication)**
 -   **[Environments Variables with NestJS](https://docs.nestjs.com/techniques/caching)**
+-   **[Authorization with NestJS](https://docs.nestjs.com/security/authorization)**
+-   **[Rate Limit with NestJS](https://docs.nestjs.com/security/rate-limiting)**
 -   **[Arquitetura Limpa](http://cleancoder.com/files/cleanArchitectureCourse.md)**
 -   **[SOLID](http://cleancoder.com/files/solid.md)**
 

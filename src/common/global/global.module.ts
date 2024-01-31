@@ -14,17 +14,23 @@ import {
   CacheModule,
 } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { CACHE_MODULE_CONFIG, JWT_MODULE_CONFIG } from '@/infra/config';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import {
+  CACHE_MODULE_CONFIG,
+  JWT_MODULE_CONFIG,
+  RATE_LIMIT_MODULE_CONFIG,
+} from '@/infra/config';
 import { validate } from '@/infra/environment/env.validation';
 import { AuthGuard } from '@/infra/guards';
 import { ExecutionTimeMiddleware } from '@/infra/middleware/execution-time.middleware';
+import { RolesGuard } from '@/infra/guards/roles.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       validate,
-      envFilePath: ['.env.test', '.env'],
+      envFilePath: ['.env'],
     }),
     JwtModule.registerAsync({
       global: true,
@@ -36,15 +42,27 @@ import { ExecutionTimeMiddleware } from '@/infra/middleware/execution-time.middl
       useFactory: CACHE_MODULE_CONFIG,
       inject: [ConfigService],
     }),
+    ThrottlerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: RATE_LIMIT_MODULE_CONFIG,
+    }),
   ],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
     {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

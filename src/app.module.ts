@@ -18,7 +18,7 @@ import { GlobalModule } from '@/common/global/global.module';
       provide: UserRepository,
       useClass: UsersCacheMemoryRepository,
     },
-    //
+
     CreateUserUseCase,
     GetAllUsersUseCase,
     FindOneUserToAuthUseCase,

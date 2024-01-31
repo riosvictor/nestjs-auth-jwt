@@ -1,9 +1,11 @@
 import { ConfigService } from '@nestjs/config';
+import { JwtModuleOptions } from '@nestjs/jwt';
 
-export const JWT_MODULE_CONFIG = async (_configService: ConfigService) => ({
+export const JWT_MODULE_CONFIG = (
+  _configService: ConfigService,
+): JwtModuleOptions => ({
   secret: _configService.get<string>('JWT_SECRET'),
   signOptions: {
-    // PATTERS ALLOWED "20h", 60 (in seconds)
-    expiresIn: _configService.get<number>('JWT_EXPIRES_IN_MINUTES') * 60,
+    expiresIn: `${_configService.get<number>('JWT_EXPIRES_IN_MINUTES')}m`,
   },
 });

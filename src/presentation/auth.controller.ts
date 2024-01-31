@@ -11,7 +11,11 @@ import {
 } from '@nestjs/common';
 import { Public } from '@/infra/guards';
 import { AuthService } from '@/application/services';
-import { RequestLoginDto, ResponseLoginDto } from '@/common/dtos';
+import {
+  RefreshLoginDto,
+  RequestLoginDto,
+  ResponseLoginDto,
+} from '@/common/dtos';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -23,6 +27,13 @@ export class AuthController {
   @Post('login')
   login(@Body() loginDto: RequestLoginDto): Promise<ResponseLoginDto> {
     return this._authService.login(loginDto.email, loginDto.password);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  refresh(@Body() refreshDto: RefreshLoginDto): Promise<ResponseLoginDto> {
+    return this._authService.validateRefresh(refreshDto.refresh_token);
   }
 
   @Get('profile')
