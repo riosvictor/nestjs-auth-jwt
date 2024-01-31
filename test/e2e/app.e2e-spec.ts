@@ -3,8 +3,9 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '@/app.module';
 import { encrypt } from '@/common/utils';
-import { FindOneUserToAuthUseCase } from '../../src/application/usecases';
-import { UserEntity } from '../../src/domain/models/entities/users';
+import { FindOneUserToAuthUseCase } from '@/application/usecases';
+import { UserEntity } from '@/domain/models/entities/users';
+import { Role } from '../../src/common/enums';
 
 describe('Application (e2e)', () => {
   let app: INestApplication;
@@ -16,6 +17,7 @@ describe('Application (e2e)', () => {
     email,
     name: 'John',
     password,
+    roles: [Role.ADMIN, Role.USER],
     id: crypto.randomUUID(),
   };
 

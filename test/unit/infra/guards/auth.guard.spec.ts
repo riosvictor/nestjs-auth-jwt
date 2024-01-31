@@ -22,7 +22,7 @@ describe('AuthGuard', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          envFilePath: './env.test',
+          envFilePath: '.env.test',
         }),
         JwtModule.registerAsync({
           imports: [ConfigModule],

@@ -5,6 +5,6 @@ export const JWT = {
     REFRESH_EXPIRES_IN_MINUTES: 10,
   },
 };
-export const CACHE_TTL_MINUTES = 10;
+export const CACHE_TTL_IN_MINUTES = 10;
 export const IS_PUBLIC_KEY = 'isPublic';
 export const ROLES_KEY = 'roles';

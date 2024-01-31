@@ -20,24 +20,6 @@ describe('CreateUserUseCase', () => {
     useCase = module.get<CreateUserUseCase>(CreateUserUseCase);
   });
 
-  // it('should be able to find a user by email when user exists', async () => {
-  //   const user = await useCase.findOne('john@example.com');
-
-  //   expect(user).toBeDefined();
-  //   expect(user?.name).toBe('john');
-  // });
-
-  // it('should return undefined if user is not found when user does not exist', async () => {
-  //   const user = await useCase.findOne('nonexistent@example.com');
-  //   expect(user).toBeUndefined();
-  // });
-
-  // it('should be able to get all users ', async () => {
-  //   const users = await useCase.getUsers();
-
-  //   expect(users.length).toBe(2);
-  // });
-
   it('should be able to create a new user', async () => {
     const user = {
       name: 'john',
