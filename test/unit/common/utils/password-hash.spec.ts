@@ -14,7 +14,7 @@ describe('encrypt function', () => {
     jest.resetAllMocks();
   });
 
-  test('should encrypt password successfully', async () => {
+  it('should encrypt password successfully', async () => {
     const mockSalt = 'mockedSalt';
     const mockHashedPassword = 'mockedHashedPassword';
 
@@ -28,7 +28,7 @@ describe('encrypt function', () => {
     expect(result).toBe(mockHashedPassword);
   });
 
-  test('should handle encryption error', async () => {
+  it('should handle encryption error', async () => {
     const mockError = new Error('Mocked error');
     (genSalt as jest.Mock).mockRejectedValue(mockError);
 
@@ -47,7 +47,7 @@ describe('validate function', () => {
     jest.resetAllMocks();
   });
 
-  test('should return true for valid password', async () => {
+  it('should return true for valid password', async () => {
     (compare as jest.Mock).mockResolvedValue(true);
 
     const result = await validate(mockPassword, mockHash);
@@ -56,7 +56,7 @@ describe('validate function', () => {
     expect(result).toBe(true);
   });
 
-  test('should return false for invalid password', async () => {
+  it('should return false for invalid password', async () => {
     (compare as jest.Mock).mockResolvedValue(false);
 
     const result = await validate(mockPassword, mockHash);
@@ -65,7 +65,7 @@ describe('validate function', () => {
     expect(result).toBe(false);
   });
 
-  test('should handle validation error', async () => {
+  it('should handle validation error', async () => {
     const mockError = new Error('Mocked error');
     (compare as jest.Mock).mockRejectedValue(mockError);
 

@@ -1,15 +1,16 @@
 import { Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { validate } from '@/infra/environment/env.validation';
-import { CACHE_TTL_MINUTES, Environment, JWT } from '@/common/constants';
 import * as dotenv from 'dotenv';
+import { validate } from '@/infra/environment/env.validation';
+import { CACHE_TTL_IN_MINUTES, JWT } from '@/common/constants';
+import { Environment } from '@/common/enums';
 
 const initializeModule = () => {
   return Test.createTestingModule({
     imports: [
       ConfigModule.forRoot({
         validate: validate,
-        envFilePath: './env.test',
+        ignoreEnvFile: true,
       }),
     ],
   }).compile();
@@ -19,8 +20,8 @@ describe('validate ConfigModule', () => {
   let originalEnv: NodeJS.ProcessEnv;
 
   beforeEach(() => {
-    originalEnv = { ...process.env };
     dotenv.config({ path: '.env.test' });
+    originalEnv = { ...process.env };
   });
 
   afterEach(() => {
@@ -137,7 +138,7 @@ describe('validate ConfigModule', () => {
       const module = await initializeModule();
       const service = module.get<ConfigService>(ConfigService);
 
-      expect(service.get('CACHE_TTL_IN_MINUTES')).toBe(CACHE_TTL_MINUTES);
+      expect(service.get('CACHE_TTL_IN_MINUTES')).toBe(CACHE_TTL_IN_MINUTES);
     });
 
     it('should run successfully when value is valid', async () => {
@@ -157,7 +158,11 @@ describe('validate ConfigModule', () => {
     });
 
     it('should throw an error when value is invalid', async () => {
+      console.log(process.env.CACHE_TTL_IN_MINUTES);
+
       process.env.CACHE_TTL_IN_MINUTES = '0';
+
+      console.log(process.env.CACHE_TTL_IN_MINUTES);
 
       await expect(async () => await initializeModule()).rejects.toThrow();
     });
