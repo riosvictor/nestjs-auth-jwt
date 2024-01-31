@@ -5,7 +5,7 @@ import { AppModule } from '@/app.module';
 import { encrypt } from '@/common/utils';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
 import { UserEntity } from '@/domain/models/entities/users';
-import { Role } from '../../src/common/enums';
+import { Role } from '@/common/enums';
 
 describe('Application (e2e)', () => {
   let app: INestApplication;
