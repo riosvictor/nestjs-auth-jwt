@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '@/adapters/interfaces';
 import { UserRepository } from '@/application/repositories';
-import { UserEntity } from '@/domain/models/entities/users';
+import { UserEntity } from '@/domain/entities';
 
 @Injectable()
 export class FindOneUserToAuthUseCase implements UseCase<UserEntity> {

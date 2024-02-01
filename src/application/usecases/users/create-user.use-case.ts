@@ -2,12 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { UserCreateDto, UserCreatedDto } from '@/common/dtos';
 import { UseCase } from '@/adapters/interfaces';
 import { UserRepository } from '@/application/repositories';
-import {
-  UserCreateMapper,
-  UserCreatedMapper,
-} from '@/domain/models/mappers/users';
+import { UserCreateMapper, UserCreatedMapper } from '@/adapters/mappers/users';
 import { encrypt } from '@/common/utils';
-import { UserEntity } from '@/domain/models/entities/users';
+import { UserEntity } from '@/domain/entities';
 
 @Injectable()
 export class CreateUserUseCase implements UseCase<UserCreatedDto> {

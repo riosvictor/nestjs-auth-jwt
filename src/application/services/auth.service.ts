@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { validate } from '@/common/utils';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
 import { ResponseLoginDto } from '@/common/dtos';
-import { UserEntity } from '@/domain/models/entities/users';
+import { UserEntity } from '@/domain/entities';
 
 @Injectable()
 export class AuthService {

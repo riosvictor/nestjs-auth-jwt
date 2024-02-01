@@ -1,7 +1,7 @@
 import { plainToClass } from 'class-transformer';
 import { UserCreateDto } from '@/common/dtos';
-import { Mapper } from '@/domain/interfaces';
-import { UserEntity } from '@/domain/models/entities/users';
+import { Mapper } from '@/adapters/interfaces';
+import { UserEntity } from '@/domain/entities';
 
 export class UserCreateMapper extends Mapper<UserCreateDto, UserEntity> {
   mapFrom(data: UserCreateDto): UserEntity {

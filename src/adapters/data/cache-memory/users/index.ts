@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RepositoryCacheMemory } from '@/adapters/data/cache-memory/repository-cache-memory.data';
-import { UserEntity } from '@/domain/models/entities/users';
+import { UserEntity } from '@/domain/entities';
 import { UserRepository } from '@/application/repositories';
 import { Role } from '@/common/enums';
 

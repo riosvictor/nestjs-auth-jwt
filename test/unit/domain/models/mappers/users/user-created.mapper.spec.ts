@@ -1,6 +1,6 @@
 import { UserCreatedDto } from '@/common/dtos';
-import { UserCreatedMapper } from '@/domain/models/mappers/users';
-import { UserEntity } from '@/domain/models/entities/users';
+import { UserCreatedMapper } from '@/adapters/mappers/users';
+import { UserEntity } from '@/domain/entities';
 
 describe('UserCreatedMapper', () => {
   it('should correctly map a UserCreatedDto to a UserEntity', () => {
