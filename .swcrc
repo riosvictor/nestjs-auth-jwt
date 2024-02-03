@@ -10,7 +10,10 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@/test/*": ["./test/*"]
+    }
   },
   "minify": false,
   "sourceMaps": true

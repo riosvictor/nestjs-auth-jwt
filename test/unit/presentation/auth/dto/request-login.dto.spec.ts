@@ -1,6 +1,6 @@
 import { validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { RequestLoginDto } from '@/common/dtos';
+import { RequestLoginDto } from '@/presentation/auth/dto';
 
 describe('LoginDto', () => {
   it('should pass validation when email is valid and password is non-empty', () => {

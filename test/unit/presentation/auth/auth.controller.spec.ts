@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@/presentation/auth.controller';
 import { JwtService } from '@nestjs/jwt';
-import { UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '@/application/services';
-import { GlobalModule } from '@/common/global/global.module';
+import { AuthController } from '@/presentation/auth/auth.controller';
+import { GlobalModule } from '@/presentation/global/global.module';
+import { UsersInMemoryRepository } from '@/infra/db/in-memory/users';
+import { IHashService } from '@/adapters/interfaces';
+import { AuthService, HashBcryptoService } from '@/application/services';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
-import { UserRepository } from '@/application/repositories';
-import { UsersCacheMemoryRepository } from '@/adapters/data/cache-memory/users';
+import { UserRepository } from '@/domain/repositories';
+import { BusinessException } from '@/domain/exceptions/bussiness.exception';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -20,8 +21,12 @@ describe('AuthController', () => {
         JwtService,
         FindOneUserToAuthUseCase,
         {
+          provide: IHashService,
+          useClass: HashBcryptoService,
+        },
+        {
           provide: UserRepository,
-          useClass: UsersCacheMemoryRepository,
+          useClass: UsersInMemoryRepository,
         },
       ],
       controllers: [AuthController],
@@ -54,9 +59,12 @@ describe('AuthController', () => {
   });
 
   it('should return 401 status code for login requests with invalid credentials', async () => {
-    authService.login = jest
-      .fn()
-      .mockRejectedValue(new UnauthorizedException());
+    authService.login = jest.fn().mockRejectedValue(
+      new BusinessException({
+        name: 'NOT_FOUND',
+        message: 'User not found',
+      }),
+    );
 
     const loginDto = { email: 'test@example.com', password: 'password' };
 

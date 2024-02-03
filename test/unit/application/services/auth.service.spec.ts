@@ -1,14 +1,14 @@
-import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from '@/application/services';
+import { AuthService, HashBcryptoService } from '@/application/services';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
-import { GlobalModule } from '@/common/global/global.module';
-import { encrypt } from '@/common/utils';
-import { UserRepository } from '@/application/repositories';
-import { UsersCacheMemoryRepository } from '@/adapters/data/cache-memory/users';
+import { GlobalModule } from '@/presentation/global/global.module';
+import { UserRepository } from '@/domain/repositories';
+import { UsersInMemoryRepository } from '@/infra/db/in-memory/users';
+import { IHashService } from '@/adapters/interfaces';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let hashService: IHashService;
   let findUserUseCase: FindOneUserToAuthUseCase;
 
   beforeEach(async () => {
@@ -18,14 +18,19 @@ describe('AuthService', () => {
         AuthService,
         FindOneUserToAuthUseCase,
         {
+          provide: IHashService,
+          useClass: HashBcryptoService,
+        },
+        {
           provide: UserRepository,
-          useClass: UsersCacheMemoryRepository,
+          useClass: UsersInMemoryRepository,
         },
       ],
       exports: [AuthService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    hashService = module.get<IHashService>(IHashService);
     findUserUseCase = module.get<FindOneUserToAuthUseCase>(
       FindOneUserToAuthUseCase,
     );
@@ -33,7 +38,7 @@ describe('AuthService', () => {
 
   it('should authenticate user with valid email and password', async () => {
     const password = 'chiclete';
-    const hashPassword = await encrypt(password);
+    const hashPassword = await hashService.encrypt(password);
     const user = {
       id: crypto.randomUUID(),
       email: 'batata@example.com',
@@ -53,7 +58,7 @@ describe('AuthService', () => {
 
     await expect(
       service.login('john@example.com', 'wrongpassword'),
-    ).rejects.toThrow(UnauthorizedException);
+    ).rejects.toThrow(Error);
   });
 
   it('should throw error when empty email or password field is provided', async () => {

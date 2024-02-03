@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '@/presentation/users.controller';
+import { UsersController } from '@/presentation/users/users.controller';
 import { CreateUserUseCase, GetAllUsersUseCase } from '@/application/usecases';
-import { UserRepository } from '@/application/repositories';
-import { UsersCacheMemoryRepository } from '@/adapters/data/cache-memory/users';
+import { UserRepository } from '@/domain/repositories';
+import { UsersInMemoryRepository } from '@/infra/db/in-memory/users';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -16,7 +16,7 @@ describe('UsersController', () => {
         GetAllUsersUseCase,
         {
           provide: UserRepository,
-          useClass: UsersCacheMemoryRepository,
+          useClass: UsersInMemoryRepository,
         },
       ],
     }).compile();

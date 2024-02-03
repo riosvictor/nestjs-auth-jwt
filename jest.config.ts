@@ -35,6 +35,7 @@ const jestConfig: Config = {
     '/build',
     '<rootDir>/dist/',
   ],
+  coveragePathIgnorePatterns: ['/test/mocks'],
 };
 
 module.exports = jestConfig;
