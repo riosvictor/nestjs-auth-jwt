@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { UserCreatedDto } from '@/common/dtos';
-import { UseCase } from '@/adapters/interfaces';
-import { UserRepository } from '@/application/repositories';
-import { UserCreatedMapper } from '@/domain/models/mappers/users';
+import { IUseCase } from '@/domain/interfaces';
+import { UserRepository } from '@/domain/repositories';
+
+type GetAllUsersOutput = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 @Injectable()
-export class GetAllUsersUseCase implements UseCase<UserCreatedDto[]> {
-  private readonly _userCreatedMapper: UserCreatedMapper;
+export class GetAllUsersUseCase implements IUseCase<GetAllUsersOutput[]> {
+  constructor(private readonly _userRepository: UserRepository) {}
 
-  constructor(private readonly _userRepository: UserRepository) {
-    this._userCreatedMapper = new UserCreatedMapper();
-  }
-
-  async execute(): Promise<UserCreatedDto[]> {
+  async execute(): Promise<GetAllUsersOutput[]> {
     const users = await this._userRepository.getAll();
 
-    return users.map((u) => this._userCreatedMapper.mapTo(u));
+    return users.map((user) => user.toJSON());
   }
 }

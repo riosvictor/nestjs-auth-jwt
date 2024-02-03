@@ -1,30 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from '@/app.module';
-import { encrypt } from '@/common/utils';
+import { Role, UserEntity } from '@/domain/entities';
+import { UserRepository } from '@/domain/repositories';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
-import { UserEntity } from '@/domain/models/entities/users';
-import { Role } from '@/common/enums';
+import { HashBcryptoService } from '@/application/services';
+import { IHashService } from '@/adapters/interfaces';
+import { UsersInMemoryRepository } from '@/infra/db/in-memory/users';
+
+const userLogin = UserEntity.create({
+  email: 'john@example.com',
+  name: 'John',
+  password: 'changeme',
+  roles: [Role.ADMIN, Role.USER],
+  id: crypto.randomUUID(),
+});
 
 describe('Application (e2e)', () => {
   let app: INestApplication;
   let findUserUseCase: FindOneUserToAuthUseCase;
+  let hashService: HashBcryptoService;
 
-  const email = 'john@example.com';
-  const password = 'changeme';
-  const user: UserEntity = {
-    email,
-    name: 'John',
-    password,
-    roles: [Role.ADMIN, Role.USER],
-    id: crypto.randomUUID(),
-  };
+  const email = userLogin.email;
+  const password = userLogin.password;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(UserRepository)
+      .useClass(UsersInMemoryRepository)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
@@ -33,6 +40,7 @@ describe('Application (e2e)', () => {
     findUserUseCase = moduleFixture.get<FindOneUserToAuthUseCase>(
       FindOneUserToAuthUseCase,
     );
+    hashService = moduleFixture.get<IHashService>(IHashService);
   });
 
   afterEach(async () => {
@@ -53,13 +61,11 @@ describe('Application (e2e)', () => {
   });
 
   it('should throw an error when trying to login with invalid credentials', async () => {
-    findUserUseCase.execute = jest.fn().mockResolvedValueOnce(null);
-
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email,
-        password,
+        email: 'foo@bar.com',
+        password: 'password',
       })
       .expect(HttpStatus.UNAUTHORIZED);
 
@@ -81,8 +87,11 @@ describe('Application (e2e)', () => {
   });
 
   it('should be successful login with correct credentials', async () => {
-    findUserUseCase.execute = jest.fn().mockResolvedValueOnce(user);
-    user.password = await encrypt(password);
+    const passwordHash = await hashService.encrypt(password);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce({
+      ...userLogin,
+      password: passwordHash,
+    });
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
@@ -98,8 +107,11 @@ describe('Application (e2e)', () => {
   });
 
   it('should be successful get profile with a valid token', async () => {
-    findUserUseCase.execute = jest.fn().mockResolvedValueOnce(user);
-    user.password = await encrypt(password);
+    const passwordHash = await hashService.encrypt(password);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce({
+      ...userLogin,
+      password: passwordHash,
+    });
 
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
@@ -115,7 +127,7 @@ describe('Application (e2e)', () => {
       .get('/auth/profile')
       .set('Authorization', `Bearer ${access_token}`)
       .expect(200);
-    const expectedObject = { email, sub: user.id };
+    const expectedObject = { email, sub: userLogin.id };
 
     expect(profileResponse.body).toMatchObject(expectedObject);
     expect(profileResponse.body).toHaveProperty('iat');

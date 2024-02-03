@@ -1,14 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { UseCase } from '@/adapters/interfaces';
-import { UserRepository } from '@/application/repositories';
-import { UserEntity } from '@/domain/models/entities/users';
+import { IUseCase } from '@/domain/interfaces';
+import { UserRepository } from '@/domain/repositories';
+import { UserEntity } from '@/domain/entities';
+import { BusinessException } from '@/domain/exceptions/bussiness.exception';
 
-@Injectable()
-export class FindOneUserToAuthUseCase implements UseCase<UserEntity> {
+export class FindOneUserToAuthUseCase implements IUseCase<UserEntity> {
   constructor(private readonly _userRepository: UserRepository) {}
 
   async execute(email: string): Promise<UserEntity> {
     const user = await this._userRepository.getOne({ email });
+
+    if (!user) {
+      throw new BusinessException({
+        name: 'NOT_FOUND',
+        message: 'User not found',
+      });
+    }
 
     return user;
   }

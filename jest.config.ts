@@ -1,7 +1,6 @@
 import { Config } from 'jest';
 
 const jestConfig: Config = {
-  preset: 'ts-jest',
   bail: true,
   clearMocks: true,
   globals: {
@@ -14,7 +13,7 @@ const jestConfig: Config = {
   testRegex: '.*\\.spec\\.ts$',
   testPathIgnorePatterns: ['/node_modules/', '/dist', '/build'],
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   cacheDirectory: '/tmp/jest',
   testEnvironment: 'jest-environment-node',
@@ -36,6 +35,7 @@ const jestConfig: Config = {
     '/build',
     '<rootDir>/dist/',
   ],
+  coveragePathIgnorePatterns: ['/test/mocks'],
 };
 
 module.exports = jestConfig;
