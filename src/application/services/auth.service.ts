@@ -5,23 +5,24 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { validate } from '@/common/utils';
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
-import { ResponseLoginDto } from '@/common/dtos';
 import { UserEntity } from '@/domain/entities';
+import { IHashService } from '@/adapters/interfaces/hash-service.interface';
+import { ResponseLoginDto } from '@/presentation/auth/dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly _findOneUserUseCase: FindOneUserToAuthUseCase,
     private readonly _jwtService: JwtService,
+    private readonly _hashService: IHashService,
     private readonly _configService: ConfigService,
   ) {}
 
   async login(email: string, password: string): Promise<ResponseLoginDto> {
     const user = await this._findOneUserUseCase.execute(email);
 
-    const isValid = await validate(password, user?.password);
+    const isValid = await this._hashService.validate(password, user?.password);
     if (!isValid) {
       throw new UnauthorizedException();
     }

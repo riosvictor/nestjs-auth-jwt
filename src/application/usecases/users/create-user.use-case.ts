@@ -1,32 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { UserCreateDto, UserCreatedDto } from '@/common/dtos';
-import { UseCase } from '@/adapters/interfaces';
-import { UserRepository } from '@/application/repositories';
-import { UserCreateMapper, UserCreatedMapper } from '@/adapters/mappers/users';
-import { encrypt } from '@/common/utils';
+import { IUseCase } from '@/domain/interfaces';
+import { UserRepository } from '@/domain/repositories';
 import { UserEntity } from '@/domain/entities';
+import { IHashService } from '@/adapters/interfaces';
 
-@Injectable()
-export class CreateUserUseCase implements UseCase<UserCreatedDto> {
-  private readonly _userCreateMapper: UserCreateMapper;
-  private readonly _userCreatedMapper: UserCreatedMapper;
+type CreateUserInput = {
+  name: string;
+  email: string;
+  password: string;
+};
 
-  constructor(private readonly _userRepository: UserRepository) {
-    this._userCreateMapper = new UserCreateMapper();
-    this._userCreatedMapper = new UserCreatedMapper();
-  }
+type CreateUserOutput = {
+  id: string;
+  name: string;
+  email: string;
+};
 
-  async execute(dto: UserCreateDto): Promise<UserCreatedDto> {
-    const entity = this._userCreateMapper.mapFrom(dto);
+export class CreateUserUseCase implements IUseCase<CreateUserOutput> {
+  constructor(
+    private readonly _userRepository: UserRepository,
+    private readonly _hashService: IHashService,
+  ) {}
+
+  async execute(dto: CreateUserInput): Promise<CreateUserOutput> {
+    const entity = UserEntity.create(dto);
     const encrypted = await this._encryptedUser(entity);
     const created = await this._userRepository.create(encrypted);
 
-    return this._userCreatedMapper.mapTo(created);
+    return created.toJSON();
   }
 
   private async _encryptedUser(data: UserEntity): Promise<UserEntity> {
     const password = data.password;
-    data.password = await encrypt(password);
+    data.password = await this._hashService.encrypt(password);
     return data;
   }
 }

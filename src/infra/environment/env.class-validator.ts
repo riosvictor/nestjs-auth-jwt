@@ -1,13 +1,25 @@
+import { Type } from 'class-transformer';
 import {
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   Min,
 } from 'class-validator';
-import { Environment } from '@/common/enums';
-import { CACHE_TTL_IN_MINUTES, JWT, RATE_LIMIT } from '@/common/constants';
+
+const CACHE_TTL_IN_MINUTES = 10;
+const JWT_EXPIRES_IN_MINUTES = 5;
+const JWT_REFRESH_EXPIRES_IN_MINUTES = 10;
+const RATE_LIMIT_TTL_MINUTES = 5;
+const RATE_LIMIT_REQUESTS = 10;
+
+export enum Environment {
+  DEVELOPMENT = 'development',
+  PRODUCTION = 'production',
+  TEST = 'test',
+}
 
 export class EnvironmentVariables {
   @IsEnum(Environment)
@@ -25,29 +37,33 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   JWT_REFRESH_SECRET: string;
 
-  @IsNumber()
-  @Min(1)
   @IsOptional()
-  JWT_EXPIRES_IN_MINUTES: number = JWT.OPTIONS.EXPIRES_IN_MINUTES;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  JWT_EXPIRES_IN_MINUTES: number = JWT_EXPIRES_IN_MINUTES;
 
-  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
   @Min(10)
-  @IsOptional()
-  JWT_REFRESH_EXPIRES_IN_MINUTES: number =
-    JWT.OPTIONS.REFRESH_EXPIRES_IN_MINUTES;
+  JWT_REFRESH_EXPIRES_IN_MINUTES: number = JWT_REFRESH_EXPIRES_IN_MINUTES;
 
-  @IsNumber()
-  @Min(1)
   @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
   CACHE_TTL_IN_MINUTES: number = CACHE_TTL_IN_MINUTES;
 
-  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
   @Min(5)
-  @IsOptional()
-  RATE_LIMIT_TTL_MINUTES: number = RATE_LIMIT.TTL_MINUTES;
+  RATE_LIMIT_TTL_MINUTES: number = RATE_LIMIT_TTL_MINUTES;
 
-  @IsNumber()
-  @Min(10)
   @IsOptional()
-  RATE_LIMIT_REQUESTS: number = RATE_LIMIT.REQUESTS;
+  @Type(() => Number)
+  @IsInt()
+  @Min(10)
+  RATE_LIMIT_REQUESTS: number = RATE_LIMIT_REQUESTS;
 }

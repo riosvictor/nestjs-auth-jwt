@@ -1,29 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from '@/presentation/users.controller';
-import {
-  CreateUserUseCase,
-  FindOneUserToAuthUseCase,
-  GetAllUsersUseCase,
-} from '@/application/usecases';
-import { AuthController } from '@/presentation/auth.controller';
-import { UserRepository } from '@/application/repositories';
-import { UsersCacheMemoryRepository } from '@/adapters/data/cache-memory/users';
-import { AuthService } from '@/application/services';
-import { GlobalModule } from '@/common/global/global.module';
+import { GlobalModule } from '@/presentation/global/global.module';
+import { AuthModule } from '@/presentation/auth/auth.module';
+import { UsersModule } from './presentation/users/users.module';
 
 @Module({
-  imports: [GlobalModule],
-  providers: [
-    {
-      provide: UserRepository,
-      useClass: UsersCacheMemoryRepository,
-    },
-
-    CreateUserUseCase,
-    GetAllUsersUseCase,
-    FindOneUserToAuthUseCase,
-    AuthService,
-  ],
-  controllers: [UsersController, AuthController],
+  imports: [GlobalModule, AuthModule, UsersModule],
 })
 export class AppModule {}
