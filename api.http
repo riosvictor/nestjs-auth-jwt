@@ -3,8 +3,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
-  "password": "changeme"
+  "email": "paul.river@example.com",
+  "password": "batatinha"
 }
 
 
@@ -18,3 +18,15 @@ Authorization: Bearer <token>
 GET http://localhost:3000/users
 Content-Type: application/json
 Authorization: Bearer <token>
+
+
+### Create User
+POST http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+  "name": "Paul River",
+  "email": "paul.river@example.com",
+  "password": "batatinha"
+}

@@ -36,6 +36,7 @@ export class AuthController {
           throw new UnauthorizedException();
         }
       }
+      throw error;
     }
   }
 

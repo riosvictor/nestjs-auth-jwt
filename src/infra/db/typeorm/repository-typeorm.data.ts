@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
-import { Entity } from '@/domain/interfaces';
 import { IRepository } from '@/domain/interfaces';
 import { BusinessException } from '@/domain/exceptions/bussiness.exception';
 
 @Injectable()
-export class RepositoryTypeOrm<
-  TEntity extends Entity<TEntity['id']>,
-> extends IRepository<TEntity, TEntity['id']> {
-  constructor(private readonly _repositoryORM: Repository<TEntity>) {
+export class RepositoryTypeOrm<TEntity> extends IRepository<TEntity, any> {
+  constructor(
+    private readonly _repositoryORM: Repository<TEntity>,
+    private readonly fieldKeyName = 'id',
+  ) {
     super();
   }
 
   async create(data: TEntity): Promise<TEntity> {
-    data.id = crypto.randomUUID();
+    data[this.fieldKeyName] = crypto.randomUUID();
 
     const user = await this._repositoryORM.save(data);
     return user;
   }
 
-  async update(id: TEntity['id'], data: TEntity): Promise<TEntity> {
+  async update(id: any, data: TEntity): Promise<TEntity> {
     const entity = await this.getById(id);
     const updatedProps = {
-      id: entity.id,
+      [this.fieldKeyName]: entity[this.fieldKeyName],
       ...data,
     };
     const entityUpdated = await this._repositoryORM.save(updatedProps);
@@ -30,7 +30,7 @@ export class RepositoryTypeOrm<
     return entityUpdated;
   }
 
-  async patch(id: TEntity['id'], data: Partial<TEntity>): Promise<TEntity> {
+  async patch(id: any, data: Partial<TEntity>): Promise<TEntity> {
     const entity = await this.getById(id);
     const updatedProps = {
       ...entity,
@@ -41,10 +41,10 @@ export class RepositoryTypeOrm<
     return entityUpdated;
   }
 
-  async getById(id: TEntity['id']): Promise<TEntity> {
+  async getById(id: any): Promise<TEntity> {
     const options: FindOptionsWhere<TEntity> = {
-      id: id as any,
-    };
+      [this.fieldKeyName]: id,
+    } as any;
     const user = await this._repositoryORM.findOneBy(options);
 
     if (user) {
@@ -79,7 +79,7 @@ export class RepositoryTypeOrm<
     return items;
   }
 
-  async delete(id: TEntity['id']): Promise<void> {
+  async delete(id: any): Promise<void> {
     const entity = await this.getById(id);
 
     await this._repositoryORM.remove(entity);

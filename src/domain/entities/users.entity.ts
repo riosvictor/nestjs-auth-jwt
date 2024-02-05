@@ -1,5 +1,3 @@
-import { Entity } from '@/domain/interfaces';
-
 export enum Role {
   USER = 'user',
   ADMIN = 'admin',
@@ -13,18 +11,16 @@ type Props = {
   roles?: Role[];
 };
 
-export class UserEntity extends Entity<string> {
+export class UserEntity {
+  id: string;
   name: string;
   email: string;
   password: string;
   roles?: Role[] = [];
 
   private constructor(props: Props) {
-    super();
-
+    // @This used for ORM purposes
     if (!props) {
-      // @This used for ORM purposes
-
       return;
     }
 
