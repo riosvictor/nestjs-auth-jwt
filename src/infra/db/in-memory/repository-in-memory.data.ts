@@ -1,27 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Entity } from '@/domain/interfaces';
 import { IRepository } from '@/domain/interfaces';
 import { BusinessException } from '@/domain/exceptions/bussiness.exception';
 
 @Injectable()
-export class RepositoryInMemory<
-  TEntity extends Entity<TEntity['id']>,
-> extends IRepository<TEntity, TEntity['id']> {
+export class RepositoryInMemory<TEntity> extends IRepository<TEntity, any> {
   protected readonly items: TEntity[];
 
-  constructor() {
+  constructor(private readonly fieldKeyName = 'id') {
     super();
     this.items = [];
   }
 
   async create(data: TEntity): Promise<TEntity> {
-    data.id = crypto.randomUUID();
+    data[this.fieldKeyName] = crypto.randomUUID();
 
     const count = this.items.push(data);
     return this.items[count - 1];
   }
 
-  async update(id: TEntity['id'], data: TEntity): Promise<TEntity> {
+  async update(id: any, data: TEntity): Promise<TEntity> {
     const index = this._getIndexById(id);
 
     this._checkIndex(index);
@@ -31,7 +28,7 @@ export class RepositoryInMemory<
     return this.items[index];
   }
 
-  async patch(id: TEntity['id'], data: Partial<TEntity>): Promise<TEntity> {
+  async patch(id: any, data: Partial<TEntity>): Promise<TEntity> {
     const index = this._getIndexById(id);
 
     this._checkIndex(index);
@@ -41,8 +38,8 @@ export class RepositoryInMemory<
     return this.items[index];
   }
 
-  async getById(id: TEntity['id']): Promise<TEntity> {
-    const item = this.items.find((item) => item.id === id);
+  async getById(id: any): Promise<TEntity> {
+    const item = this.items.find((item) => item[this.fieldKeyName] === id);
 
     return item;
   }
@@ -68,7 +65,7 @@ export class RepositoryInMemory<
     return items;
   }
 
-  async delete(id: TEntity['id']): Promise<void> {
+  async delete(id: any): Promise<void> {
     const index = this._getIndexById(id);
 
     this._checkIndex(index);
@@ -76,8 +73,8 @@ export class RepositoryInMemory<
     this.items.splice(index, 1);
   }
 
-  private _getIndexById(id: TEntity['id']): number {
-    return this.items.findIndex((item) => item.id === id);
+  private _getIndexById(id: any): number {
+    return this.items.findIndex((item) => item[this.fieldKeyName] === id);
   }
 
   private _checkIndex(index: number): void {
