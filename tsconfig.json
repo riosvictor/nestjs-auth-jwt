@@ -12,7 +12,7 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"],
-      "@/test/*": ["../test/*"]
+      "@mocks/*": ["../__mocks__/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
