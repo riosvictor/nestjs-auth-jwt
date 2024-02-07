@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { UserEntity } from '@/domain/entities';
-import { getUserTypeORMRepository, userMock } from '@/test/mocks/users.mock';
+import { getUserTypeORMRepository, userMock } from '@mocks/users.mock';
 
 describe('typeorm user schema', () => {
   let repositoryORM: Repository<UserEntity>;

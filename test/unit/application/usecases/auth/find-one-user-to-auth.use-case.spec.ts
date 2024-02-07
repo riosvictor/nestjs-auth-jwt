@@ -1,7 +1,7 @@
 import { FindOneUserToAuthUseCase } from '@/application/usecases';
 import { UserRepository } from '@/domain/repositories';
 import { UsersInMemoryRepository } from '@/infra/db/in-memory/users';
-import { userMock } from '@/test/mocks/users.mock';
+import { userMock } from '@mocks/users.mock';
 
 describe('FindOneUserToAuthUseCase', () => {
   let useCase: FindOneUserToAuthUseCase;

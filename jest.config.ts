@@ -13,13 +13,14 @@ const jestConfig: Config = {
   testRegex: '.*\\.spec\\.ts$',
   testPathIgnorePatterns: ['/node_modules/', '/dist', '/build'],
   transform: {
-    '^.+\\.(t|j)sx?$': '@swc/jest',
+    '^.+\\.(t|j)sx?$': 'ts-jest',
   },
   cacheDirectory: '/tmp/jest',
   testEnvironment: 'jest-environment-node',
   setupFiles: ['./test/setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@mocks/(.*)$': '<rootDir>/__mocks__/$1',
   },
   coverageThreshold: {
     global: {
