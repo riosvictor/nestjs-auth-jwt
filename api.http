@@ -1,29 +1,32 @@
 ### Auth
+# @name loginUserAdmin
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "paul.river@example.com",
-  "password": "batatinha"
+  "email": "john@example.com",
+  "password": "changeme"
 }
 
+###
+@token = {{loginUserAdmin.response.body.access_token}}
 
 ### Profile
 GET http://localhost:3000/auth/profile
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer {{token}}
 
 
 ### Get Users
 GET http://localhost:3000/users
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer {{token}}
 
 
 ### Create User
 POST http://localhost:3000/users
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer {{token}}
 
 {
   "name": "Paul River",
