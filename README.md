@@ -137,11 +137,14 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[TypeScript](https://www.typescriptlang.org/)**
 -   **[NestJS](https://docs.nestjs.com/)**
 -   **[Class Validator](https://github.com/typestack/class-validator)**
--   **[Authentication with NestJS](https://docs.nestjs.com/security/authentication)**
--   **[Cache with NestJS](https://docs.nestjs.com/security/authentication)**
--   **[Environments Variables with NestJS](https://docs.nestjs.com/techniques/caching)**
--   **[Authorization RBAC with NestJS](https://docs.nestjs.com/security/authorization)**
--   **[Rate Limit with NestJS](https://docs.nestjs.com/security/rate-limiting)**
+-   **[Authentication JWT](https://docs.nestjs.com/security/authentication)**
+-   **[Cache with Redis](https://docs.nestjs.com/security/authentication)**
+-   **[Environments Variables](https://docs.nestjs.com/techniques/caching)**
+-   **[Authorization RBAC](https://docs.nestjs.com/security/authorization)**
+-   **[Rate Limit](https://docs.nestjs.com/security/rate-limiting)**
+-   **[CORS](https://docs.nestjs.com/security/cors)**
+-   **[CSP with Helmet](https://docs.nestjs.com/security/helmet)**
+-   **[Limitando body nas requests](https://docs.nestjs.com/faq/raw-body)**
 -   **[Arquitetura Limpa](http://cleancoder.com/files/cleanArchitectureCourse.md)**
 -   **[SOLID](http://cleancoder.com/files/solid.md)**
 
@@ -169,7 +172,12 @@ Outras Pastas que são compartilhadas por várias camadas da aplicação
 2. Infra
    - Nesta pasta podem ser implementados middlewares ou interceptors, porém essa pasta está acoplada ao framework, não sendo reaproveitada em caso de mudança de tecnologia (framework, banco de dados, estruturas externas);
    - Mas ela é necessária para implementar lógicas relacionadas a autenticação, etc.
+---
 
+Critérios de segurança seguidos conforme as orientações abaixo
+   - [OWASP para aplicações NodeJS](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html);
+   - [OWASP para Docker NodeJS](https://cheatsheetseries.owasp.org/cheatsheets/NodeJS_Docker_Cheat_Sheet.html);
+   
 ---
 
 <a name="author"></a>

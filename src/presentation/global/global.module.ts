@@ -19,6 +19,7 @@ import {
   CACHE_MODULE_CONFIG,
   JWT_MODULE_CONFIG,
   RATE_LIMIT_MODULE_CONFIG,
+  WINSTON_MODULE_CONFIG,
 } from '@/infra/config';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -27,6 +28,7 @@ import { AuthGuard } from '@/infra/guards';
 import { ExecutionTimeMiddleware } from '@/infra/middleware/execution-time.middleware';
 import { RolesGuard } from '@/infra/guards/roles.guard';
 import { UserSchema } from '@/infra/db/typeorm/users';
+import { WinstonModule } from 'nest-winston';
 
 @Module({
   imports: [
@@ -54,6 +56,10 @@ import { UserSchema } from '@/infra/db/typeorm/users';
       synchronize: true,
       logging: false,
       entities: [UserSchema],
+    }),
+    WinstonModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: WINSTON_MODULE_CONFIG,
     }),
   ],
   providers: [
