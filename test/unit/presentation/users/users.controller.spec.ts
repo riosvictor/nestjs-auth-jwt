@@ -18,6 +18,10 @@ describe('UsersController', () => {
           provide: UserRepository,
           useClass: UsersInMemoryRepository,
         },
+        {
+          provide: 'CACHE_MANAGER',
+          useValue: {},
+        },
       ],
     }).compile();
 

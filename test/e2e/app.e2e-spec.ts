@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import request from 'supertest';
+import * as request from 'supertest';
 import { AppModule } from '@/app.module';
 import { Role, UserEntity } from '@/domain/entities';
 import { UserRepository } from '@/domain/repositories';
@@ -133,5 +133,72 @@ describe('Application (e2e)', () => {
     expect(profileResponse.body).toHaveProperty('iat');
     expect(profileResponse.body).toHaveProperty('exp');
     expect(profileResponse.body).toHaveProperty('sub');
+  });
+
+  it('should be successful get all users', async () => {
+    const passwordHash = await hashService.encrypt(password);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce({
+      ...userLogin,
+      password: passwordHash,
+    });
+
+    const loginResponse = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email,
+        password,
+      })
+      .expect(HttpStatus.OK);
+
+    const { access_token } = loginResponse.body;
+
+    const { body: users } = await request(app.getHttpServer())
+      .get('/users')
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+
+    expect(users).toHaveLength(2);
+  });
+
+  it('should be successful create a new user', async () => {
+    const passwordHash = await hashService.encrypt(password);
+    findUserUseCase.execute = jest.fn().mockResolvedValueOnce({
+      ...userLogin,
+      password: passwordHash,
+    });
+
+    const loginResponse = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email,
+        password,
+      })
+      .expect(HttpStatus.OK);
+
+    const { access_token } = loginResponse.body;
+    const newUser = {
+      name: 'Paul River',
+      email: 'paul.river@example.com',
+      password: crypto.getRandomValues(new Uint8Array(10)).join(''),
+    };
+
+    const { body: usersBefore } = await request(app.getHttpServer())
+      .get('/users')
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+    const { body: newUserResponse } = await request(app.getHttpServer())
+      .post('/users')
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(newUser)
+      .expect(201);
+
+    const { body: usersAfter } = await request(app.getHttpServer())
+      .get('/users')
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+
+    expect(usersBefore).toHaveLength(2);
+    expect(usersAfter).toHaveLength(3);
+    expect(usersAfter.filter((u) => u.id === newUserResponse.id)).toBeDefined();
   });
 });
