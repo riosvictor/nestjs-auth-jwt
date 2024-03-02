@@ -1,29 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateUserUseCase, GetAllUsersUseCase } from '@/application/usecases';
-import { UserRepository } from '@/domain/repositories';
-import { IHashService } from '@/adapters/interfaces';
 import { HashBcryptoService } from '@/application/services';
-import { UserSchema, UsersTypeOrmRepository } from '@/infra/db/typeorm/users';
-import { UserEntity } from '@/domain/entities';
+import { IHashService } from '@/adapters/interfaces';
+import { strategyRepositoryProvider } from '@/adapters/strategies';
+import { UserRepository } from '@/domain/repositories';
+import { UserSchema } from '@/infra/db/typeorm/users';
 import { createUserUseCase, getAllUsersUseCase } from './factories';
 import { UsersController } from './users.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserSchema])],
   providers: [
-    {
-      provide: UserRepository,
-      useFactory(dataSource: DataSource) {
-        return new UsersTypeOrmRepository(dataSource.getRepository(UserEntity));
-      },
-      inject: [getDataSourceToken()],
-    },
-    // {
-    //   provide: UserRepository,
-    //   useClass: UsersInMemoryRepository,
-    // },
+    strategyRepositoryProvider(),
     {
       provide: IHashService,
       useClass: HashBcryptoService,
