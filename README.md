@@ -138,8 +138,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[NestJS](https://docs.nestjs.com/)**
 -   **[Class Validator](https://github.com/typestack/class-validator)**
 -   **[Authentication JWT](https://docs.nestjs.com/security/authentication)**
--   **[Cache with Redis](https://docs.nestjs.com/security/authentication)**
--   **[Environments Variables](https://docs.nestjs.com/techniques/caching)**
+-   **[Cache with Redis](https://docs.nestjs.com/security/caching)**
+-   **[Environments Variables](https://docs.nestjs.com/techniques/configuration#custom-validate-function)**
 -   **[Authorization RBAC](https://docs.nestjs.com/security/authorization)**
 -   **[Rate Limit](https://docs.nestjs.com/security/rate-limiting)**
 -   **[CORS](https://docs.nestjs.com/security/cors)**
