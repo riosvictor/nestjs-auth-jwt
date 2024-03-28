@@ -1,4 +1,5 @@
 import {
+  Global,
   Inject,
   MiddlewareConsumer,
   Module,
@@ -30,6 +31,7 @@ import { RolesGuard } from '@/infra/guards/roles.guard';
 import { UserSchema } from '@/infra/db/typeorm/users';
 import { WinstonModule } from 'nest-winston';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
