@@ -54,7 +54,7 @@ import { WinstonModule } from 'nest-winston';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: join(__dirname, '..', '..', '..', 'database.sqlite'),
+      database: join(__dirname, '..', '..', '..', 'db', 'database.sqlite'),
       synchronize: true,
       logging: false,
       entities: [UserSchema],
