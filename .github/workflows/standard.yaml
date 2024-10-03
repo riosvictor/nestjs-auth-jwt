@@ -26,6 +26,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Hello World
+      uses: riosvictor/hello-world-action@v1.0.0
+      with:
+        who-to-greet: 'Paulo Rios'
     - name: Install Dependencies
       run: npm ci
     - name: Make Build
