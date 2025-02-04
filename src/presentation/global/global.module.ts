@@ -87,7 +87,7 @@ export class GlobalModule implements OnModuleDestroy, NestModule {
   constructor(@Inject(CACHE_MANAGER) private readonly _cacheManager: Cache) {}
 
   async onModuleDestroy() {
-    await this._cacheManager.reset();
+    await this._cacheManager.clear();
   }
 
   async configure(consumer: MiddlewareConsumer) {

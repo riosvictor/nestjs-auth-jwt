@@ -43,7 +43,7 @@ describe('GlobalModule', () => {
   });
 
   it('should reset cache manager when onModuleDestroy is called', async () => {
-    const resetSpy = jest.spyOn(cacheManager, 'reset');
+    const resetSpy = jest.spyOn(cacheManager, 'clear');
     const globalModule = global.get<GlobalModule>(GlobalModule);
 
     await globalModule.onModuleDestroy();
