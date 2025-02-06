@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { GlobalModule } from '@/presentation/global/global.module';
-import { AuthModule } from '@/presentation/auth/auth.module';
-import { UsersModule } from './presentation/users/users.module';
+import { EventProcessor } from './events/event.processor';
+
 
 @Module({
-  imports: [GlobalModule, AuthModule, UsersModule],
+  providers: [EventProcessor],
+  exports: [EventProcessor],
 })
 export class AppModule {}
