@@ -15,7 +15,6 @@ export class Cargo {
   constructor(public readonly name: string) {}
 
   handleLoad(event: LoadEvent): void {
-    event.priorPort = this.#priorPort;
     this.#port = null;
     this.#ship = event.ship;
     this.#ship.handleLoad(event);
@@ -24,7 +23,6 @@ export class Cargo {
   reverseLoad(event: LoadEvent): void {
     this.#ship?.reverseLoad(event);
     this.#ship = null;
-    this.#port = event.priorPort;
   }
 
   handleArrival(event: ArrivalEvent): void {

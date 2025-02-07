@@ -4,8 +4,6 @@ import { Ship } from '../domain/ship';
 import { Port } from '../domain';
 
 export class LoadEvent extends DomainEvent {
-  priorPort: Port;
-  
   constructor(
     occurred: Date,
     public readonly cargo: Cargo,

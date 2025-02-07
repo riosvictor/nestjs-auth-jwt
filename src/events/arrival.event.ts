@@ -4,7 +4,6 @@ import { Ship } from '../domain/ship';
 import { Cargo } from '../domain';
 
 export class ArrivalEvent extends DomainEvent {
-  priorPort: Port;
   priorCargoInCanada: Map<Cargo, boolean> = new Map();
 
   constructor(

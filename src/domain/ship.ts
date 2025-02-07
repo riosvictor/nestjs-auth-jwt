@@ -17,12 +17,10 @@ export class Ship {
 
   handleLoad(event: LoadEvent): void {
     this.cargoList.push(event.cargo);
-    this.#priorPort = event.priorPort;
   }
 
   reverseLoad(event: LoadEvent): void {
     this.cargoList = this.cargoList.filter((c) => !event.ship.cargoList.includes(c));
-    this.#priorPort = event.priorPort;
   }
 
   handleArrival(event: ArrivalEvent): void {
