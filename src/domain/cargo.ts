@@ -8,16 +8,13 @@ import { Ship } from './ship';
  * Represents a cargo that can be loaded onto a ship.
  */
 export class Cargo {
-  #port: Port;
   #ship: Ship;
-  #priorPort: Port;
   #declaredValues: Record<string, number> = {};
   hasBeenInCanada = false;
 
   constructor(public readonly name: string) {}
 
   handleLoad(event: LoadEvent): void {
-    this.#port = null;
     this.#ship = event.ship;
     this.#ship.handleLoad(event);
   }
@@ -42,5 +39,9 @@ export class Cargo {
 
   reverseArrival(event: ArrivalEvent): void {
     this.hasBeenInCanada = event.priorCargoInCanada.get(this) ?? false;
+  }
+
+  getDeclaredValue(cargoName: string): number | undefined {
+    return this.#declaredValues[cargoName];
   }
 }
