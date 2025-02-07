@@ -6,12 +6,16 @@ export class UnloadEvent extends DomainEvent {
   constructor(
     occurred: Date,
     private cargo: Cargo,
-    private ship: Ship,
+    public ship: Ship,
   ) {
     super(occurred);
   }
 
   process(): void {
-    this.ship.unloadCargo(this.cargo);
+    this.ship.handleUnload(this);
+  }
+
+  reverse(): void {
+    this.ship.reverseUnload(this);
   }
 }

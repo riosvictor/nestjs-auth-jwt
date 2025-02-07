@@ -8,4 +8,5 @@ export abstract class DomainEvent {
   }
 
   abstract process(): void;
+  abstract reverse(): void;
 }

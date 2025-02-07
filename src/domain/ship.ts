@@ -1,28 +1,60 @@
 import { Port } from './port';
 import { Cargo } from './cargo';
+import { ArrivalEvent, DepartureEvent, LoadEvent, UnloadEvent } from '../events';
+import { Country } from './country.enum';
 
+/**
+ * Represents a ship that can carry cargo.
+ */
 export class Ship {
-  private cargo: Cargo[] = [];
+  private cargoList: Cargo[] = [];
+  #priorPort: Port;
 
   constructor(
     public readonly name: string,
     public port: Port,
   ) {}
 
-  handleArrival(port: Port): void {
-    this.port = port;
-    this.cargo.forEach((cargo) => cargo.handleArrival(port));
+  handleLoad(event: LoadEvent): void {
+    this.cargoList.push(event.cargo);
+    this.#priorPort = event.priorPort;
+  }
+
+  reverseLoad(event: LoadEvent): void {
+    this.cargoList = this.cargoList.filter((c) => !event.ship.cargoList.includes(c));
+    this.#priorPort = event.priorPort;
+  }
+
+  handleArrival(event: ArrivalEvent): void {
+    this.#priorPort = event.ship.port;
+    this.port = event.port;
+    
+    this.cargoList.forEach((c) => {
+      if (this.port.country === Country.CANADA) {
+        c.hasBeenInCanada = true;
+      }
+    });
+  }
+
+  reverseArrival(event: ArrivalEvent): void {
+    this.port = event.ship.#priorPort;
+    this.#priorPort = undefined;
   }
 
   handleDeparture(): void {
+    this.#priorPort = this.port;
     this.port = Port.AT_SEA;
   }
 
-  loadCargo(cargo: Cargo): void {
-    this.cargo.push(cargo);
+  reverseDeparture(event: DepartureEvent): void {
+    event.ship.port = this.#priorPort;
   }
 
-  unloadCargo(cargo: Cargo): void {
-    this.cargo = this.cargo.filter((c) => c !== cargo);
+  handleUnload(event: UnloadEvent): void {
+    this.cargoList = this.cargoList.filter((c) => !event.ship.cargoList.includes(c));
   }
+
+  reverseUnload(event: UnloadEvent): void {
+    this.cargoList.push(...event.ship.cargoList);
+  }  
 }

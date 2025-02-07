@@ -42,4 +42,24 @@ describe('EventProcessor', () => {
 
     expect(cargo.hasBeenInCanada).toBeTruthy();
   });
+
+  it('should process an event', () => {
+    const arrivalEvent = new ArrivalEvent(new Date('2005-11-01'), sanFranciscoPort, ship);
+    eventProcessor.process(arrivalEvent);
+    expect(ship.port).toEqual(sanFranciscoPort);
+  });
+
+  it('should reverse an event', () => {
+    const arrivalEvent = new ArrivalEvent(new Date('2005-11-01'), sanFranciscoPort, ship);
+    const departureEvent = new DepartureEvent(new Date('2005-11-01'), ship)
+
+    eventProcessor.process(arrivalEvent);
+    eventProcessor.process(departureEvent);
+    
+    expect(ship.port).toEqual(Port.AT_SEA);
+    
+    eventProcessor.reverse(departureEvent);
+
+    expect(ship.port).toEqual(sanFranciscoPort);
+  });
 });
