@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Port, Ship } from '../domain';
-import { EventProcessorService } from '../services/event.processor';
+import { EventProcessorService } from '../services/event-processor.service';
 
 @Injectable()
 export class CustomsNotificationGateway {

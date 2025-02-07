@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EventProcessorService } from './services/event.processor';
+import { EventProcessorService } from './services/event-processor.service';
 
 
 @Module({

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CustomsNotificationGateway } from '../../../src/gateways/customs-notification.gateway';
-import { EventProcessorService } from '../../../src/services/event.processor';
+import { EventProcessorService } from '../../../src/services/event-processor.service';
 
 describe('CustomsNotificationGateway', () => {
   let gateway: CustomsNotificationGateway;

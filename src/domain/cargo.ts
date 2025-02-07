@@ -1,4 +1,5 @@
 import { ArrivalEvent, LoadEvent } from '../events';
+import { LoggedPricingGatewayService } from '../services/logged-pricing-gateway.service';
 import { Country } from './country.enum';
 import { Port } from './port';
 import { Ship } from './ship';
@@ -10,6 +11,7 @@ export class Cargo {
   #port: Port;
   #ship: Ship;
   #priorPort: Port;
+  #declaredValues: Record<string, number> = {};
   hasBeenInCanada = false;
 
   constructor(public readonly name: string) {}
@@ -25,12 +27,17 @@ export class Cargo {
     this.#ship = null;
   }
 
-  handleArrival(event: ArrivalEvent): void {
+  handleArrival(event: ArrivalEvent, pricingGateway?: LoggedPricingGatewayService): void {
     if (event.ship.port.country === Country.CANADA) {
       this.hasBeenInCanada = true;
     }
 
     event.priorCargoInCanada.set(this, this.hasBeenInCanada);
+    
+    if (pricingGateway){
+      pricingGateway.getPrice(this.name)
+        .then((price) => this.#declaredValues[this.name] = price);
+    }
   }
 
   reverseArrival(event: ArrivalEvent): void {

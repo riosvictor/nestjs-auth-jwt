@@ -6,7 +6,7 @@ import {
   DepartureEvent,
   UnloadEvent,
 } from '../../../src/events';
-import { EventProcessorService } from '../../../src/services/event.processor';
+import { EventProcessorService } from '../../../src/services/event-processor.service';
 
 describe('EventProcessor', () => {
   let eventProcessor: EventProcessorService;
