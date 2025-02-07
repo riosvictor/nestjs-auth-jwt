@@ -6,7 +6,7 @@ export class ArrivalEvent extends DomainEvent {
   constructor(
     occurred: Date,
     private port: Port,
-    private ship: Ship,
+    public ship: Ship,
   ) {
     super(occurred);
   }

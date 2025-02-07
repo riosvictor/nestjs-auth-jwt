@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { DomainEvent } from './domain-event';
+import { DomainEvent } from '../events';
 
 @Injectable()
-export class EventProcessor {
+export class EventProcessorService {
   private log: DomainEvent[] = [];
+  isActive = true;
 
-  process(event: DomainEvent): void {
+  process(event: DomainEvent, isActive: boolean = true): void {
+    this.isActive = isActive;
     event.process();
     this.log.push(event);
   }

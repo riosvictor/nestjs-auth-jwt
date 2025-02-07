@@ -1,25 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Country, Cargo, Port, Ship } from '../../../src/domain';
 import {
-  EventProcessor,
   ArrivalEvent,
   LoadEvent,
   DepartureEvent,
   UnloadEvent,
 } from '../../../src/events';
+import { EventProcessorService } from '../../../src/services/event.processor';
 
 describe('EventProcessor', () => {
-  let eventProcessor: EventProcessor;
+  let eventProcessor: EventProcessorService;
   let ship: Ship;
   let sanFranciscoPort: Port, vancouverPort: Port;
   let cargo: Cargo;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EventProcessor],
+      providers: [EventProcessorService],
     }).compile();
 
-    eventProcessor = module.get<EventProcessor>(EventProcessor);
+    eventProcessor = module.get<EventProcessorService>(EventProcessorService);
     ship = new Ship('King Roy', Port.AT_SEA);
     sanFranciscoPort = new Port('San Francisco', Country.US);
     vancouverPort = new Port('Vancouver', Country.CANADA);
