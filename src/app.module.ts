@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { EventProcessorService } from './services/event-processor.service';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
+import { AppController } from './presentation/app.controller';
 
 
 @Module({
-  providers: [EventProcessorService],
-  exports: [EventProcessorService],
+  imports: [
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
+    }),
+  ],
+  controllers: [AppController]
 })
 export class AppModule {}

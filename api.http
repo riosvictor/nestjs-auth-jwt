@@ -1,35 +1,8 @@
-### Auth
-# @name loginUserAdmin
-POST http://localhost:3000/auth/login
+### Memory Leak
+GET http://localhost:3000/memory-leak
 Content-Type: application/json
 
-{
-  "email": "john@example.com",
-  "password": "changeme"
-}
 
-###
-@token = {{loginUserAdmin.response.body.access_token}}
-
-### Profile
-GET http://localhost:3000/auth/profile
+### CPU Intensive
+GET http://localhost:3000/cpu-intensive
 Content-Type: application/json
-Authorization: Bearer {{token}}
-
-
-### Get Users
-GET http://localhost:3000/users
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-
-### Create User
-POST http://localhost:3000/users
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-  "name": "Paul River",
-  "email": "paul.river@example.com",
-  "password": "batatinha"
-}

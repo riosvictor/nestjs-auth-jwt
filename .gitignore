@@ -36,3 +36,4 @@ lerna-debug.log*
 
 .env
 *.sqlite
+cpu-profile.txt
