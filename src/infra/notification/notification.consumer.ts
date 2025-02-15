@@ -24,17 +24,23 @@ export class NotificationConsumer implements OnModuleInit {
   }
 
   private async pollMessages() {
+    const onTesting = process.env.NODE_ENV === 'test';
+
     while (true) {
-      const { Messages } = await this.sqs.send(
+      const response = await this.sqs.send(
         new ReceiveMessageCommand({ QueueUrl: this.queueUrl, MaxNumberOfMessages: 1, WaitTimeSeconds: 10 }),
       );
+
+      const messages = response?.Messages;
       
-      if (Messages) {
-        for (const message of Messages) {
+      if (messages) {
+        for (const message of messages) {
           console.log('Received:', message.Body);
           await this.sqs.send(new DeleteMessageCommand({ QueueUrl: this.queueUrl, ReceiptHandle: message.ReceiptHandle }));
         }
       }
+
+      if (onTesting) break;
     }
   }
 }
