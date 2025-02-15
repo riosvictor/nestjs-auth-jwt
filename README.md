@@ -63,15 +63,7 @@ Temos as seguintes pastas
 ## ⚙️ Funcionalidades
 
 - O projeto implementa a arquitetura limpa como padrão de desenvolvimento de software. Utilizando princípios de SOLID e Clean Code.
-- Consiste de uma API Backend implementando as seguintes funcionalidades:
-   1. Autenticação JWT
-   2. Refresh Token JWT
-   3. Autorização RBAC com Roles [`ADMIN`, `USER`]
-   4. Cache em memória para as requisições GET
-   5. Validação das variáveis de ambiente
-   6. Criptografia e Descriptografia de senha no processo de cadastro e verificação de usuário
-   7. CORS para segurança das requisições de outro domínio
-   8. Validação dos dados de entrada
+- Consiste de uma Aplicação que se comunica através de eventos.
 
 ---
 
@@ -115,14 +107,6 @@ $ podman-compose down
 ##### Rodando com Docker
 Basta trocar os comandos acima de `podman` para `docker`
 
-##### Dados de Teste
-Para fins de teste existem 2 usuários previamente cadastrados com permissões diferentes.
-
-| email | senha | roles |
-|-------|-------|-------|
-|  maria@example.com  |  guess    |  user  |
-|  john@example.com   |  changeme |  admin |
-
 ---
 
 <a name="tech"></a>
@@ -136,15 +120,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[NodeJS](https://nodejs.org/en/)**
 -   **[TypeScript](https://www.typescriptlang.org/)**
 -   **[NestJS](https://docs.nestjs.com/)**
--   **[Class Validator](https://github.com/typestack/class-validator)**
--   **[Authentication JWT](https://docs.nestjs.com/security/authentication)**
--   **[Cache with Redis](https://docs.nestjs.com/security/caching)**
 -   **[Environments Variables](https://docs.nestjs.com/techniques/configuration#custom-validate-function)**
--   **[Authorization RBAC](https://docs.nestjs.com/security/authorization)**
--   **[Rate Limit](https://docs.nestjs.com/security/rate-limiting)**
--   **[CORS](https://docs.nestjs.com/security/cors)**
--   **[CSP with Helmet](https://docs.nestjs.com/security/helmet)**
--   **[Limitando body nas requests](https://docs.nestjs.com/faq/raw-body)**
 -   **[Arquitetura Limpa](http://cleancoder.com/files/cleanArchitectureCourse.md)**
 -   **[SOLID](http://cleancoder.com/files/solid.md)**
 
@@ -172,12 +148,6 @@ Outras Pastas que são compartilhadas por várias camadas da aplicação
 2. Infra
    - Nesta pasta podem ser implementados middlewares ou interceptors, porém essa pasta está acoplada ao framework, não sendo reaproveitada em caso de mudança de tecnologia (framework, banco de dados, estruturas externas);
    - Mas ela é necessária para implementar lógicas relacionadas a autenticação, etc.
----
-
-Critérios de segurança seguidos conforme as orientações abaixo
-   - [OWASP para aplicações NodeJS](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html);
-   - [OWASP para Docker NodeJS](https://cheatsheetseries.owasp.org/cheatsheets/NodeJS_Docker_Cheat_Sheet.html);
-   
 ---
 
 <a name="author"></a>

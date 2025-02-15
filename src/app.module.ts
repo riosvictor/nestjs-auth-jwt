@@ -1,14 +1,11 @@
 import { Module } from '@nestjs/common';
-import { DevtoolsModule } from '@nestjs/devtools-integration';
-import { AppController } from './presentation/app.controller';
-
+import { ConfigModule } from '@nestjs/config';
+import { NotificationModule } from './infra/notification/notification.module';
 
 @Module({
   imports: [
-    DevtoolsModule.register({
-      http: process.env.NODE_ENV !== 'production',
-    }),
+    ConfigModule.forRoot(),
+    NotificationModule,
   ],
-  controllers: [AppController]
 })
 export class AppModule {}

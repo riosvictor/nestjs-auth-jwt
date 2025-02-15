@@ -1,8 +1,5 @@
-### Memory Leak
-GET http://localhost:3000/memory-leak
+### Start Event
+POST http://localhost:3000/notifications
 Content-Type: application/json
 
-
-### CPU Intensive
-GET http://localhost:3000/cpu-intensive
-Content-Type: application/json
+{"message": "Hello World"}
