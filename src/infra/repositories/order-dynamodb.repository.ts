@@ -21,23 +21,20 @@ export class OrderDynamoDBRepository implements IOrderRepository {
     });
   }
 
-  async insert(pedido: Order): Promise<void> {
-    const total = pedido.items.reduce((total, item) => total + item.price * item.quantity, 0);
-
+  async insert(order: Order): Promise<void> {
     const params = {
       TableName: this.tableName,
-      Item: marshall({
-        ...pedido,
-        total,
+      Item: marshall(order, {
+        convertClassInstanceToMap: true
       })
     };
     await this.client.send(new PutItemCommand(params));
   }
 
-  async getById(pedidoId: string): Promise<Order> {
+  async getById(orderId: string): Promise<Order> {
     const params = {
       TableName: this.tableName,
-      Key: marshall({ id: pedidoId })
+      Key: marshall({ id: orderId })
     };
     const result = await this.client.send(new GetItemCommand(params));
     return result.Item ? (unmarshall(result.Item) as Order) : undefined;

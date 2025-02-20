@@ -26,7 +26,6 @@ export class OrderService {
     const newOrder = new Order(
       crypto.randomUUID(),
       customerId,
-      orderItems.reduce((total, item) => total + item.price * item.quantity, 0),
       orderItems,
     );
     await this.orderRepository.insert(newOrder);

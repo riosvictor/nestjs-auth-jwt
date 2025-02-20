@@ -13,14 +13,19 @@ export enum OrderStatus {
 export class Order {
   public status: OrderStatus = OrderStatus.PENDING;
   public readonly createdAt: Date = new Date();
+  public totalPrice: number;
 
   constructor(
     public readonly id: string,
     public readonly customerId: string,
-    public totalPrice: number,
     public readonly items?: OrderItem[],
   ) {
     this.items = items ? [...items] : [];
+    this.totalPrice = this.calculateTotalPrice();
+  }
+
+  private calculateTotalPrice(): number {
+    return this.items.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 
   changeStatus(newStatus: OrderStatus): void {
