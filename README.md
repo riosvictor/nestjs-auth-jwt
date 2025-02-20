@@ -85,14 +85,6 @@ Ferramentas que são requisitos para a execução do projeto
 
 #### 🎲 Rodando a aplicação
 
-Defina a forma de persistir os dados através do arquivo `.env` na variável `DB` (ex: `DB=memory` ou `DB=dynamodb`)
- 
-Caso use o DynamoDB, inicie o container do DynamoDB usando a [imagem oficial](https://hub.docker.com/r/amazon/dynamodb-local) mencionada na [documentação da AWS](https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
-
-Para visualizar os dados, pode usar o NoSQL Workbench, mencionado pela AWS na [documentação](https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/workbench.html).
-
-Caso utilize o DynamoDB, crie a tabela `orders` com a chave primária `id` do tipo `string`.
-
 ```bash
 
 # comentário
@@ -142,12 +134,18 @@ A abordagem de arquitetura limpa tem uma dependência sequencial entre as seguin
 
 1. Presentation
    - pasta que representa a camada de frameworks e drivers, ou seja, o mundo externo (db, frameworks, dispositivos, interfaces externas)
+     - controllers: responsáveis por receber as requisições e enviar as respostas
 2. Adapters
    - pasta que representa a camada de adaptadores, responsáveis pela tradução para comunicação com os elementos externos (controllers, presenters e repositories)
 3. Application
    - pasta que representa a camada de casos de uso que representam as regras de negócio da aplicação, responsável pela comunicação com as entidades (podendo conter services também)
+     - usecases: contém os casos de uso da aplicação
+     - services: contém os serviços da aplicação
 4. Domain
-   - pasta que representa a camada de entidades (as quais geralmente são um retrato das tabelas do banco de dados)
+   - pasta que representa a camada de domínio, onde estão os modelos, eventos e contratos das interfaces de repositório.
+     - entity: contém as entidades principais do domínio
+     - events: define os eventos do sistema
+     - repositories: define os contratos/interfaces de repositórios, garantindo que a infraestrutura implemente esses contratos
 ---  
 
 Outras Pastas que são compartilhadas por várias camadas da aplicação
@@ -156,6 +154,9 @@ Outras Pastas que são compartilhadas por várias camadas da aplicação
 2. Infra
    - Nesta pasta podem ser implementados middlewares ou interceptors, porém essa pasta está acoplada ao framework, não sendo reaproveitada em caso de mudança de tecnologia (framework, banco de dados, estruturas externas);
    - Mas ela é necessária para implementar lógicas relacionadas a autenticação, etc.
+     - repository: implementa os repositórios definidos no domínio
+     - event-store: implementa o armazenamento dos eventos
+     - projections: implementa as projeções, que são visões derivadas dos eventos armazenados
 ---
 
 <a name="author"></a>
