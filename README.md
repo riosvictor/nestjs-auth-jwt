@@ -85,6 +85,14 @@ Ferramentas que são requisitos para a execução do projeto
 
 #### 🎲 Rodando a aplicação
 
+Defina a forma de persistir os dados através do arquivo `.env` na variável `DB` (ex: `DB=memory` ou `DB=dynamodb`)
+ 
+Caso use o DynamoDB, inicie o container do DynamoDB usando a [imagem oficial](https://hub.docker.com/r/amazon/dynamodb-local) mencionada na [documentação da AWS](https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
+
+Para visualizar os dados, pode usar o NoSQL Workbench, mencionado pela AWS na [documentação](https://docs.aws.amazon.com/pt_br/amazondynamodb/latest/developerguide/workbench.html).
+
+Caso utilize o DynamoDB, crie a tabela `orders` com a chave primária `id` do tipo `string`.
+
 ```bash
 
 # comentário

@@ -1,5 +1,23 @@
-### Start Event
-POST http://localhost:3000/notifications
+### Get Order
+GET http://localhost:3000/orders/488ad206-3465-4da9-900c-bef3095db26c
 Content-Type: application/json
 
-{"message": "Hello World"}
+### Create Order
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "customerId": "{{$guid}}",
+  "items": [
+    {
+      "productId": "{{$guid}}",
+      "quantity": 2,
+      "price": 100
+    },
+    {
+      "productId": "{{$guid}}",
+      "quantity": 1,
+      "price": 200
+    }
+  ]
+}
